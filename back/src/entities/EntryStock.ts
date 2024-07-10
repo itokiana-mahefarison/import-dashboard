@@ -1,34 +1,35 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Produit } from "./Produit";
 import { Site } from "./Site";
 
 @Entity()
 export class EntryStock extends BaseEntity{
-    @PrimaryGeneratedColumn({type: 'int'})
-    id?: number
+    @PrimaryColumn()
+    id?: string
 
-    @Column({nullable: false, type: "varchar"})
+    @Column({nullable: false})
     entryDate?: string
 
-    @OneToOne(() => Produit, {eager: true})
+    @ManyToOne(() => Produit, (produit) => produit.entryStock)
     @JoinColumn()
-    produit?: Produit
+    produit?: Produit | null
 
-    @Column({nullable: true, default: 0, type: "int"})
+    @Column({nullable: true, default: 0})
     poidsBrutKg?: number
 
-    @Column({nullable: true, default: 0, type: "int"})
+    @Column({nullable: true, default: 0})
     tareKg?: number
 
-    @Column({nullable: true, default: 0, type: "int"})
+    @Column({nullable: true, default: 0})
     poidsNetKg?: number
 
-    @Column({nullable: true, type: "varchar"})
+    @Column({nullable: true})
     observation?: string
 
-    @Column({nullable: true, type: "varchar"})
+    @Column({nullable: true})
     comments?: string
 
-    @ManyToOne(() => Site, (site) => site.entriesStock, {eager: true})
-    site?: Site
+    @ManyToOne(() => Site, (site) => site.entriesStock)
+    @JoinColumn()
+    site?: Site | null
 }

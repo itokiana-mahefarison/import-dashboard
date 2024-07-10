@@ -10,7 +10,7 @@ export const useExcelColumns = ({file, suspense}: ExcelColumnsReadingProps) => {
     useEffect(() => {
         if(isSuccess){
             const firstSheet = data.SheetNames[0]
-            const headers = (utils.sheet_to_json(data.Sheets[firstSheet], {header: 1, range: 'B3:O3'}) as Array<any>)[0]
+            const headers = (utils.sheet_to_json(data.Sheets[firstSheet], {header: 1}) as Array<any>)[0]
 
             setColumns(headers)
         }

@@ -44,7 +44,7 @@ export const UploadForm = (props: UploadFormProps) => {
             { props.isLoading ? <PropagateLoader/> : <Upload/> }
             <div className="mt-4 flex items-center text-sm leading-6 text-gray-600">
                 <div
-                    className={`relative cursor-pointer rounded-md font-semibold text-[rgb(25,118,210)] focus-within:outline-none focus-within:ring-2 focus-within:ring-[rgb(25,118,210)] focus-within:ring-offset-2 hover:text-[rgb(25,118,180)]`}
+                    className={`relative rounded-md font-semibold text-[rgb(25,118,210)] focus-within:outline-none focus-within:ring-2 focus-within:ring-[rgb(25,118,210)] focus-within:ring-offset-2 hover:text-[rgb(25,118,180)]`}
                 >
                     <span>Cliquez pour uploader</span>
                     <input {...getInputProps()} name="file-upload" />

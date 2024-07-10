@@ -1,10 +1,12 @@
 import express, { Express, Router, urlencoded, json } from "express"
 import { useDataSource } from "../db/useDataSource"
 import { errorHandler } from "../middlewares"
+import { corsMiddleware } from "../middlewares/CorsMiddleware"
 
 export const useExpressApp = (props: ExpressAppProps) => {
     const app = express()
 
+    app.use(corsMiddleware)
     app.use(urlencoded({extended: false}))
     app.use(json())
 

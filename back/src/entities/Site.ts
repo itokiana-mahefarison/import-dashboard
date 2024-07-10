@@ -3,10 +3,10 @@ import { EntryStock } from "./EntryStock";
 
 @Entity()
 export class Site extends BaseEntity{
-    @PrimaryColumn({type: "string"})
+    @PrimaryColumn()
     id?: string
 
-    @Column({nullable: false, type: "varchar"})
+    @Column({nullable: false})
     name?: string
 
     @OneToMany(() => EntryStock, (entry) => entry.site, {eager: true})

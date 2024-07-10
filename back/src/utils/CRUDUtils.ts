@@ -15,9 +15,9 @@ export const generateControllerByEntity = (pathToGenerate: string, entityName: s
         const entityController = join(pathToGenerate, `${entityName}Controller.ts`)
         const params = {
             entity: entityName,
-            entityLower: _.lowerCase(entityName),
-            entityUpper: _.upperCase(entityName),
-            entitiesLower: _.lowerCase(`${entityName}s`)
+            entityLower: entityName.toLowerCase(),
+            entityUpper: entityName.toUpperCase(),
+            entitiesLower: `${entityName}s`.toLowerCase()
         }
         writeFileSync(entityController, Mustache.render(template, params))
     } catch (error) {
@@ -45,7 +45,7 @@ export const addCRUDControllers = (indexData: string, entitiesName: Array<string
         controllers: entitiesName.map((entity) => {
             return {
                 entity,
-                entityLower: _.lowerCase(entity)
+                entityLower: entity.toLowerCase()
             }
         })
     }
@@ -85,7 +85,7 @@ router.get('/getById/:id', async (req, res, next) => {
     const { id } = req.params
     const {{entityLower}} = await {{entity}}.findOne({
         where: {
-            id: parseInt(id)
+            id
         }
     })
 
@@ -106,8 +106,8 @@ router.post('/insert', async (req, res, next) => {
 router.post('/insertBatch', async (req, res, next) => {
     const data = req.body
 
-    const entities = await {{entity}}.insert(data as Array<{{entity}}>)
-    return res.status(200).json({rows: entities.affected})
+    const entities = await Promise.all(data.map((item: {{entity}}) => {{entity}}.save(item as {{entity}})))
+    return res.status(200).json({rows: entities.length})
 })
 
 router.put('/update', async (req, res, next) => {

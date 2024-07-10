@@ -4,14 +4,13 @@ import { utils } from 'xlsx'
 import { ExcelColumnsReadingProps } from "./useExcelColumns"
 import _ from 'lodash'
 
-export const useExcelRows = ({file, suspense}: Props) => {
+export const useExcelRows = ({file, suspense, dataRange, sheetName}: Props) => {
     const {data, isSuccess} = useExcelReading(file, suspense)
     const [rows, setRows] = useState<Array<any>>()
 
     useEffect(() => {
         if(isSuccess){
-            const firstSheet = data.SheetNames[0]
-            const dataRows = utils.sheet_to_json(data.Sheets[firstSheet], {defval: ""})
+            const dataRows = utils.sheet_to_json(data.Sheets[sheetName], {defval: "", range: dataRange})
 
             setRows(dataRows)
             
@@ -23,5 +22,7 @@ export const useExcelRows = ({file, suspense}: Props) => {
 }
 
 type Props = ExcelColumnsReadingProps & {
-    showErrorOnly?: boolean
+    showErrorOnly?: boolean,
+    dataRange?: string,
+    sheetName: string
 }

@@ -11,6 +11,7 @@ import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValu
 import { useExcelSheets } from "@/hooks/xlsx/useExcelSheets"
 import { Badge } from "@/components/ui/badge"
 import { useImportConfigurationFormData } from "../hooks/useImportConfigurationFormData"
+import { useImportDataMutation } from "../hooks/useImportDataMutation"
 
 const ImportStocksContainer = () => {
     const [file, setFile] = useState<File | undefined>()
@@ -24,10 +25,18 @@ const ImportStocksContainer = () => {
     const [currentDataRange, setCurrentDataRange] = useState<string>()
     const [openDialog, setOpenDialog] = useState<boolean>()
 
+    const { mutate } = useImportDataMutation()
+
     const resetForm = () => {
         setSelectedSheet(undefined)
         setCurrentDataRange(undefined)
     }
+
+    const handleImportData = useCallback(() => {
+        if(file){
+            mutate(file)
+        }
+    }, [mutate, file])
 
     useEffect(() => {
         reset()
@@ -67,7 +76,7 @@ const ImportStocksContainer = () => {
                                     <Plus/>
                                     Ajouter une configuration
                                 </Button>
-                                <Button>
+                                <Button onClick={handleImportData}>
                                     Importer les données
                                 </Button>
                             </div>

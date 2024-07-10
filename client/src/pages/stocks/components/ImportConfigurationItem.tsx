@@ -4,7 +4,7 @@ import { X } from "lucide-react"
 import { useImportConfigurationFormData } from "../hooks/useImportConfigurationFormData"
 import _ from "lodash"
 
-export const ImportConfigurationItem = ({ sheetName, dataRange, file }: Props) => {
+export const ImportConfigurationItem = ({ sheetName, dataRange }: Props) => {
     const { setFormData } = useImportConfigurationFormData()
     return (
         <Card>
@@ -28,5 +28,4 @@ export const ImportConfigurationItem = ({ sheetName, dataRange, file }: Props) =
 type Props = {
     sheetName: string
     dataRange: string 
-    file?: File
 }
