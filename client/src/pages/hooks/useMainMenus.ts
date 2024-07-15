@@ -5,7 +5,7 @@ export const useMainMenus = (): Array<GroupMenu> => {
         {
             menus: [
                 {
-                    href: 'dashboard',
+                    href: '/dashboard',
                     label: "Dashboard",
                     icon: LayoutGrid,
                 }
@@ -15,12 +15,12 @@ export const useMainMenus = (): Array<GroupMenu> => {
             groupLabel: "Stocks",
             menus: [
                 {
-                    href: 'stocks',
+                    href: '/stocks',
                     label: 'Recapitulation de stock',
                     icon: Blocks
                 },
                 {
-                    href: 'stocks/new',
+                    href: '/stocks/import',
                     label: 'Importer un fichier stock',
                     icon: Upload
                 }
@@ -30,7 +30,7 @@ export const useMainMenus = (): Array<GroupMenu> => {
             groupLabel: "Produits",
             menus: [
                 {
-                    href: 'products',
+                    href: '/products',
                     label: 'Liste des produits',
                     icon: Bean
                 }

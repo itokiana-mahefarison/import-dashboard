@@ -10,7 +10,7 @@ export const useImportDataMutation = () => {
     return useMutation(
         async (data: File) => {
             const arrayBuffer = await data.arrayBuffer()
-            const workbook = await read(arrayBuffer, { type: 'binary', dateNF: "DD/MM/YYYY" })
+            const workbook = await read(arrayBuffer, { type: 'binary', dateNF: 'dd"/"mm"/"yyyy', cellDates: true })
             let excelData: Array<Record<string, any>> = []
 
             Object.keys(configuration).forEach((key) => {

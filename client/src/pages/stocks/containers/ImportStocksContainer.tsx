@@ -12,6 +12,7 @@ import { useExcelSheets } from "@/hooks/xlsx/useExcelSheets"
 import { Badge } from "@/components/ui/badge"
 import { useImportConfigurationFormData } from "../hooks/useImportConfigurationFormData"
 import { useImportDataMutation } from "../hooks/useImportDataMutation"
+import { useRecapStocksDataQuery } from "../hooks/useRecapStocksDataQuery"
 
 const ImportStocksContainer = () => {
     const [file, setFile] = useState<File | undefined>()
@@ -25,7 +26,8 @@ const ImportStocksContainer = () => {
     const [currentDataRange, setCurrentDataRange] = useState<string>()
     const [openDialog, setOpenDialog] = useState<boolean>()
 
-    const { mutate } = useImportDataMutation()
+    const { mutate, isSuccess } = useImportDataMutation()
+    const { invalidateQuery } = useRecapStocksDataQuery()
 
     const resetForm = () => {
         setSelectedSheet(undefined)
@@ -42,6 +44,12 @@ const ImportStocksContainer = () => {
         reset()
     }, [file])
 
+    useEffect(() => {
+        if(isSuccess){
+            invalidateQuery()
+        }
+    }, [])
+
     return (
         <ContentLayout 
             title="Importer un fichier stock" 
@@ -56,7 +64,7 @@ const ImportStocksContainer = () => {
                         url: '/stocks'
                     },
                     {
-                        label: "Nouveau"
+                        label: "Importer"
                     }
                 ]
             }

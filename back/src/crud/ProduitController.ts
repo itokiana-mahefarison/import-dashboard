@@ -17,9 +17,7 @@ router.get('/getAll', async (req, res, next) => {
 
     return res.status(200).json({
         total: produits.length,
-        data: {
-            produits
-        }
+        data: produits
     })
 })
 
@@ -35,7 +33,7 @@ router.get('/getById/:id', async (req, res, next) => {
         return res.status(404).json({message: "PRODUIT_NOT_FOUND"})
     }
 
-    return res.status(200).json({ produit })
+    return res.status(200).json(produit)
 })
 
 router.post('/insert', async (req, res, next) => {

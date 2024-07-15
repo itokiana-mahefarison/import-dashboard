@@ -13,6 +13,6 @@ export class Produit extends BaseEntity {
     @Column({nullable: true})
     class?: string
 
-    @OneToMany(() => EntryStock, (entry) => entry.produit, {eager: true})
+    @OneToMany(() => EntryStock, (entry) => entry.produit, {lazy: true})
     entryStock?: Array<EntryStock>
 }

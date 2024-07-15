@@ -10,17 +10,17 @@ export class EntryStock extends BaseEntity{
     @Column({nullable: false})
     entryDate?: string
 
-    @ManyToOne(() => Produit, (produit) => produit.entryStock)
+    @ManyToOne(() => Produit, (produit) => produit.entryStock, {eager: true})
     @JoinColumn()
     produit?: Produit | null
 
-    @Column({nullable: true, default: 0})
+    @Column({nullable: true, default: 0, type: "float"})
     poidsBrutKg?: number
 
-    @Column({nullable: true, default: 0})
+    @Column({nullable: true, default: 0, type: "float"})
     tareKg?: number
 
-    @Column({nullable: true, default: 0})
+    @Column({nullable: true, default: 0, type: "float"})
     poidsNetKg?: number
 
     @Column({nullable: true})
@@ -29,7 +29,7 @@ export class EntryStock extends BaseEntity{
     @Column({nullable: true})
     comments?: string
 
-    @ManyToOne(() => Site, (site) => site.entriesStock)
+    @ManyToOne(() => Site, (site) => site.entriesStock, {eager: true})
     @JoinColumn()
     site?: Site | null
 }

@@ -17,9 +17,7 @@ router.get('/getAll', async (req, res, next) => {
 
     return res.status(200).json({
         total: entrystocks.length,
-        data: {
-            entrystocks
-        }
+        data: entrystocks
     })
 })
 
@@ -35,7 +33,7 @@ router.get('/getById/:id', async (req, res, next) => {
         return res.status(404).json({message: "ENTRYSTOCK_NOT_FOUND"})
     }
 
-    return res.status(200).json({ entrystock })
+    return res.status(200).json(entrystock)
 })
 
 router.post('/insert', async (req, res, next) => {

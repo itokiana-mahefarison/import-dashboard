@@ -75,9 +75,7 @@ router.get('/getAll', async (req, res, next) => {
 
     return res.status(200).json({
         total: {{entitiesLower}}.length,
-        data: {
-            {{entitiesLower}}
-        }
+        data: {{entitiesLower}}
     })
 })
 
@@ -93,7 +91,7 @@ router.get('/getById/:id', async (req, res, next) => {
         return res.status(404).json({message: "{{entityUpper}}_NOT_FOUND"})
     }
 
-    return res.status(200).json({ {{entityLower}} })
+    return res.status(200).json({{entityLower}})
 })
 
 router.post('/insert', async (req, res, next) => {

@@ -9,6 +9,6 @@ export class Site extends BaseEntity{
     @Column({nullable: false})
     name?: string
 
-    @OneToMany(() => EntryStock, (entry) => entry.site, {eager: true})
+    @OneToMany(() => EntryStock, (entry) => entry.site, {lazy: true})
     entriesStock?: Array<EntryStock>
 }
