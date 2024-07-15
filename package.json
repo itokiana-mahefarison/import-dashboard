@@ -12,6 +12,7 @@
     "start-back": "cd back && npm run start",
     "start-back:developpment": "cd back && npm run start-developpment",
     "start-client": "cd client && npm run dev",
+    "build-client": "cd client && npm run build",
     "start-all": "concurrently \"npm run start-back\" \"npm run start-client\""
   },
   "author": "",
