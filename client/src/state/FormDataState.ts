@@ -1,6 +1,6 @@
 import { atomFamily } from "recoil";
 
-export const FormDataState = atomFamily<Record<string, any>, string>({
+export const FormDataState = atomFamily<any, string>({
     key: 'FormData',
     default: {}
 })

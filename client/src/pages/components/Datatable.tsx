@@ -4,6 +4,7 @@ import * as React from "react"
 import {
   ColumnDef,
   ColumnFiltersState,
+  RowData,
   SortingState,
   VisibilityState,
   flexRender,
@@ -31,14 +32,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useSkipper } from "@/hooks/useSkipper"
 
-export const Datatable = ({data, columns, hideFilterInput, hideFitlerColumn, columnToFilter = "id"}: Props<Record<string,any>>) => {
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (index: number, key: string, value: any) => void
+  }
+}
+
+export const Datatable = ({data, columns, hideFilterInput, hideFitlerColumn, columnToFilter = "id", ...props}: Props<Record<string,any>>) => {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
+    const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper()
 
   const table = useReactTable({
     data,
@@ -50,6 +59,14 @@ export const Datatable = ({data, columns, hideFilterInput, hideFitlerColumn, col
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    autoResetPageIndex,
+    meta: {
+      updateData:  (index, key, value) => {
+        skipAutoResetPageIndex()
+        props.onUpdateRow?.(index, key, value)
+      }
+    },
+    debugTable: true,
     state: {
       sorting,
       columnFilters,
@@ -187,4 +204,5 @@ type Props<T> = {
   columnToFilter?: string
   hideFilterInput?: boolean
   hideFitlerColumn?: boolean
+  onUpdateRow?: (index: number, key: string, value: any) => any
 }

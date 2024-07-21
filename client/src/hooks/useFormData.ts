@@ -6,7 +6,7 @@ import { useEffect, useMemo } from "react"
 
 export const useFormData = <T = any>(props: Props<T>) => {
     const globalId = useMemo(() => props.id || uuid(), [props.id])
-    const [formData, setFormData] = useRecoilState(FormDataState(globalId))
+    const [formData, setFormData] = useRecoilState<T>(FormDataState(globalId))
     const reset = useResetRecoilState(FormDataState(globalId))
 
     useEffect(() => {
