@@ -13,7 +13,7 @@ export const ImportConfigurationItem = ({ sheetName, dataRange }: Props) => {
                     <div className="flex justify-between items-center">
                         <span>{sheetName}</span>
                         <Button size={"sm"}>
-                            <X size={18} onClick={() => setFormData((v) => _.omit(v, sheetName))} />
+                            <X size={18} onClick={() => setFormData((v: any) => _.omit(v, sheetName))} />
                         </Button>
                     </div>
                 </CardTitle>

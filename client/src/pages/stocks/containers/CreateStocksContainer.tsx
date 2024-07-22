@@ -69,13 +69,13 @@ const CreateStocksContainer = () => {
                         onChange={(val) => setPeriod(val)}
                     />
                 </div>
-                {/* <Datatable
+                <Datatable
                     columns={columns}
                     data={formData}
                     hideFilterInput
                     hideFitlerColumn
                     onUpdateRow={handleInputChange}
-                /> */}
+                />
                 
             </div>
         </ContentLayout>
