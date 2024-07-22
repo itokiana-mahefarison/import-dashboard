@@ -50,8 +50,14 @@ const CreateStocksContainer = () => {
                     </Label>
                     <ComboBox
                         value={site?.id}
-                        options={[]}
+                        options={[
+                            {
+                                label: "Hello",
+                                value: "hello"
+                            }
+                        ]}
                         onSelectedOption={(val) => setSite({id: val})}
+                        onInputChange={(val) => console.log(val)}
                     />
                 </div>
                 <div className="grid gap-2 w-[300px]">
@@ -63,13 +69,13 @@ const CreateStocksContainer = () => {
                         onChange={(val) => setPeriod(val)}
                     />
                 </div>
-                <Datatable
+                {/* <Datatable
                     columns={columns}
                     data={formData}
                     hideFilterInput
                     hideFitlerColumn
                     onUpdateRow={handleInputChange}
-                />
+                /> */}
                 
             </div>
         </ContentLayout>

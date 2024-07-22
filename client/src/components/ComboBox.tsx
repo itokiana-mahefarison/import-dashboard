@@ -3,9 +3,9 @@ import { cn } from "@/lib/utils";
 import {
 	Command,
 	CommandEmpty,
-	CommandGroup,
 	CommandInput,
 	CommandItem,
+	CommandList,
 } from "@/components/ui/command";
 import {
 	Popover,
@@ -17,12 +17,8 @@ import { Button } from "@/components/ui/button";
 
 export const ComboBox = (props: Props) => {
     const [open, setOpen] = React.useState<boolean>(false)
-	const [suggestText, setSuggestText] = React.useState<string>()
 
-	const handleOnInputChange = (value: string) => {
-		setSuggestText(value)
-		props.onInputChange?.(value)
-	}
+	console.log(props.value, props.options)
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -40,19 +36,18 @@ export const ComboBox = (props: Props) => {
                 </Button>
             </PopoverTrigger>
 			<PopoverContent className="w-auto p-0">
-				<Command>
-					<CommandInput placeholder="Sélectionner" value={suggestText} className="h-9" />
-					<CommandEmpty>Aucune correspondance</CommandEmpty>
-					<CommandGroup>
-						{props.options?.map((item, index) => (
+				<Command onValueChange={(value) => {
+					props.onSelectedOption?.(value);
+					setOpen(false)
+				}}>
+					<CommandInput placeholder="Sélectionner" onValueChange={props.onInputChange} className="h-9" />
+					<CommandList>
+						<CommandEmpty>Aucune correspondance</CommandEmpty>
+						{props.options.map((item, index) => (
 							<CommandItem
 								key={index}
 								value={item.value}
-								onBlur={props.onBlur}
-								onSelect={(currentValue) => {
-									props.onSelectedOption?.(currentValue);
-									setOpen(false)
-								}}
+								onSelect={props.onSelectedOption}
 							>
 								{item.label}
 								<Check
@@ -66,7 +61,7 @@ export const ComboBox = (props: Props) => {
 								/>
 							</CommandItem>
 						))}
-					</CommandGroup>
+					</CommandList>
 				</Command>
 			</PopoverContent>
 		</Popover>
@@ -75,13 +70,13 @@ export const ComboBox = (props: Props) => {
 
 type Props = Pick<React.ComponentProps<'div'>, 'className'> & {
 	value?: any;
-	options?: Array<OptionsItem>;
-	onSelectedOption?: (val: any) => void;
+	options: Array<OptionsItem>;
+	onSelectedOption?: (val: string) => void;
 	onInputChange?: (val: string) => void
 	onBlur?: () => void
 };
 
-type OptionsItem = {
-	label?: string;
-	value?: any;
+export type OptionsItem = {
+	label: string;
+	value: any;
 };

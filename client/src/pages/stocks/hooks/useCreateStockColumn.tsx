@@ -46,19 +46,20 @@ export const useCreateStockColumn = () => {
                 accessorKey: 'produit',
                 header: 'Nom du produit',
                 cell: ({row, table}) => {
-                    const [value, setValue] = useState(row.original?.produit?.id)
+                    const initialValue = row.original?.produit?.id
+                    const [value, setValue] = useState(initialValue)
 
                     const handleOnBlur = () => {
                         table.options.meta?.updateData(row.index, "produit", value)
                     }
 
                     useEffect(() => {
-                        setValue(row.original?.produit?.id)
-                    }, [row.original?.produit?.id])
+                        setValue(initialValue)
+                    }, [initialValue])
 
                     return (
                         <ComboBox
-                            value={(row.original?.produit?.id)}
+                            value={value}
                             options={[]}
                             onSelectedOption={(val) => setValue(val)}
                             onBlur={handleOnBlur}
@@ -75,6 +76,7 @@ export const useCreateStockColumn = () => {
                 cell: ({row}) => {
                     return (
                         <Input
+                            tabIndex={1}
                             value={row?.original?.produit?.id}
                             readOnly
                             className="cursor-default"
@@ -85,20 +87,22 @@ export const useCreateStockColumn = () => {
             {
                 accessorKey: 'poidsBrutKg',
                 header: "Poids brut en KG",
-                cell: ({row, table}) => {
-                    const [value, setValue] = useState<string>(row?.getValue("poidsBrutKg"))
+                cell: ({row, table, getValue}) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState<string>(initialValue)
 
                     const handleOnBlur = () => {
                         table.options.meta?.updateData(row.index, "poidsBrutKg", value)
                     }
 
                     useEffect(() => {
-                        setValue(row.getValue("poidsBrutKg"))
-                    }, [row.getValue("poidsBrutKg")])
+                        setValue(initialValue)
+                    }, [initialValue])
 
                     return (
                         <Input 
-                            value={row?.getValue('poidsBrutKg')} 
+                            tabIndex={2}
+                            value={value} 
                             onBlur={handleOnBlur}
                             onChange={(e) => setValue(e.target.value)}/>
                     )
@@ -107,20 +111,22 @@ export const useCreateStockColumn = () => {
             {
                 accessorKey: "tareKg",
                 header: "Tare en KG",
-                cell: ({row, table}) => {
-                    const [value, setValue] = useState<string>(row?.getValue("tareKg"))
+                cell: ({row, table, getValue}) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState<string>(initialValue)
 
                     const handleOnBlur = () => {
                         table.options.meta?.updateData(row.index, "tareKg", value)
                     }
 
                     useEffect(() => {
-                        setValue(row.getValue("tareKg"))
-                    }, [row.getValue("tareKg")])
+                        setValue(initialValue)
+                    }, [initialValue])
 
                     return (
                         <Input 
-                            value={row?.getValue("tareKg")} 
+                            tabIndex={3}
+                            value={value} 
                             onBlur={handleOnBlur}
                             onChange={(e) => setValue(e.target.value)}/>
                     )
@@ -129,20 +135,22 @@ export const useCreateStockColumn = () => {
             {
                 accessorKey: "poidsNetKg",
                 header: "Poids net en KG",
-                cell: ({row, table}) => {
-                    const [value, setValue] = useState<string>(row?.getValue("poidsNetKg"))
+                cell: ({row, table, getValue}) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState<string>(initialValue)
 
                     const handleOnBlur = () => {
                         table.options.meta?.updateData(row.index, "poidsNetKg", value)
                     }
 
                     useEffect(() => {
-                        setValue(row.getValue("poidsNetKg"))
-                    }, [row.getValue("poidsNetKg")])
+                        setValue(initialValue)
+                    }, [initialValue])
 
                     return (
                         <Input 
-                            value={row?.getValue('poidsNetKg')} 
+                            tabIndex={4}
+                            value={value} 
                             onBlur={handleOnBlur}
                             onChange={(e) => setValue(e.target.value)}/>
                     )
@@ -151,19 +159,21 @@ export const useCreateStockColumn = () => {
             {
                 accessorKey: 'observation',
                 header: "Observations",
-                cell: ({row, table}) => {
-                    const [value, setValue] = useState<string>(row?.getValue("observation"))
+                cell: ({row, table, getValue}) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState<string>(initialValue)
 
                     const handleOnBlur = () => {
                         table.options.meta?.updateData(row.index, "observation", value)
                     }
 
                     useEffect(() => {
-                        setValue(row.getValue("observation"))
-                    }, [row.getValue("observation")])
+                        setValue(initialValue)
+                    }, [initialValue])
                     return (
                         <Input 
-                            value={row.getValue('observation')} 
+                            tabIndex={5}
+                            value={value} 
                             onBlur={handleOnBlur}
                             onChange={(e) => setValue(e.target.value)}/>
                     )
@@ -172,20 +182,22 @@ export const useCreateStockColumn = () => {
             {
                 accessorKey: 'comments',
                 header: 'Autres commentaires',
-                cell: ({row, table}) => {
-                    const [value, setValue] = useState<string>(row?.getValue("comments"))
+                cell: ({row, table, getValue}) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState<string>(initialValue)
 
                     const handleOnBlur = () => {
                         table.options.meta?.updateData(row.index, "comments", value)
                     }
 
                     useEffect(() => {
-                        setValue(row.getValue("comments"))
-                    }, [row.getValue("comments")])
+                        setValue(initialValue)
+                    }, [initialValue])
 
                     return (
                         <Input 
-                            value={row.getValue('comments')} 
+                            tabIndex={6}
+                            value={value} 
                             onBlur={handleOnBlur}
                             onChange={(e) => setValue(e.target.value)}/>
                     )
