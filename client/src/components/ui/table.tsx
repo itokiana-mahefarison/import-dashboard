@@ -1,6 +1,13 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { RowData } from "@tanstack/react-table"
+
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (index: number, key: string, value: any) => void
+  }
+}
 
 const Table = React.forwardRef<
   HTMLTableElement,

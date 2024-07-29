@@ -2,12 +2,18 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import routes from "./pages/Routes"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { RecoilRoot } from "recoil"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import { MainLoader } from "./components/MainLoader"
+import moment from "moment"
+import "moment/dist/locale/fr"
 
 const App = () => {
   const queryClient = new QueryClient()
   const router = createBrowserRouter(routes)
+
+  useEffect(() => {
+    moment.locale("fr")
+  }, [])
 
   return (
     <Suspense fallback={<MainLoader/>}>

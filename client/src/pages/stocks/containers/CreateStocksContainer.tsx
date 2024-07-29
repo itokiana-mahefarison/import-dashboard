@@ -1,32 +1,56 @@
 import { ComboBox } from "@/components/ComboBox"
 import { DatePicker } from "@/components/DatePicker"
 import { Label } from "@/components/ui/label"
-import { Datatable } from "@/pages/components/Datatable"
 import { TSite } from "@/types/TSite"
-import { useCallback, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useCreateStockColumn } from "../hooks/useCreateStockColumn"
-import { useCreateStockFormData } from "../hooks/useCreateStockFormData"
 import { ContentLayout } from "@/pages/components/ContentLayout"
 import _ from "lodash"
+import { useFetchSiteFn } from "../hooks/useFetchSiteFn"
+import { EditableTable } from "@/pages/components/EditableTable"
+import { v4 as uuid } from "uuid"
+import { ColumnDef } from "@tanstack/react-table"
+import { TEntryStock } from "@/types/TEntryStock"
+import { Input } from "@/components/ui/input"
+import { useHttpMutation } from "@/hooks/useHttpMutation"
 
 const CreateStocksContainer = () => {
     const [site, setSite] = useState<TSite>()
     const [period, setPeriod] = useState<string>()
     const columns = useCreateStockColumn()
-    const { formData, setFormData } = useCreateStockFormData()
+    const { mutate } = useHttpMutation({
+        method: "POST",
+        controllerUrl: "entrystock/insertBatch"
+    })
 
-    const handleInputChange = useCallback((index: number, key: string, val: any) => {
-        const temp = _.cloneDeep(formData)
-        const entry = {
-            ...temp[index],
-            [key]: val
+    const fetchSiteFn = useFetchSiteFn()
+
+    const defaultColumn = useMemo((): Partial<ColumnDef<TEntryStock>> => {
+        return {
+            cell: ({ row, table, getValue, column }) => {
+                const initialValue = getValue() as string
+                const [value, setValue] = useState(initialValue)
+    
+                useEffect(() => {
+                    setValue(initialValue)
+                }, [initialValue])
+    
+                const handleOnBlur = () => {
+                    table.options.meta?.updateData(row.index, column.id, value)
+                }
+    
+                return (
+                    <Input
+                        value={value}
+                        onChange={(e) => setValue(e.target.value)}
+                        onBlur={handleOnBlur}/>
+                )
+            },
+            enableHiding: false,
+            enableSorting: false,
+            enableColumnFilter: false
         }
-
-        temp.splice(index, 1, entry)
-
-        setFormData(temp)
-    }, [formData])
-
+    }, [])
     return (
         <ContentLayout
             title="Insérer un tableau de stocks"
@@ -50,14 +74,11 @@ const CreateStocksContainer = () => {
                     </Label>
                     <ComboBox
                         value={site?.id}
-                        options={[
-                            {
-                                label: "Hello",
-                                value: "hello"
-                            }
-                        ]}
                         onSelectedOption={(val) => setSite({id: val})}
-                        onInputChange={(val) => console.log(val)}
+                        fetchOptions={fetchSiteFn}
+                        onFetchOptionsSuccess={(options) => {
+                            return options.data?.map((item) => ({label: item?.name, value: item?.id}))
+                        }}
                     />
                 </div>
                 <div className="grid gap-2 w-[300px]">
@@ -69,17 +90,32 @@ const CreateStocksContainer = () => {
                         onChange={(val) => setPeriod(val)}
                     />
                 </div>
-                <Datatable
+                <EditableTable
+                    id={EDITABLE_TABLE_FORMDATA_ID}
+                    defaultColumn={defaultColumn}
                     columns={columns}
-                    data={formData}
-                    hideFilterInput
-                    hideFitlerColumn
-                    onUpdateRow={handleInputChange}
+                    defaultValue={[
+                        {
+                            id: uuid()
+                        }
+                    ]}
+                    onBeforeSaving={(data) => {
+                        return data.map((item) => {
+                            return {
+                                ...item,
+                                site,
+                                entryDate: period
+                            }
+                        })
+                    }}
+                    onSaving={(data) => mutate(data)}
                 />
                 
             </div>
         </ContentLayout>
     )
 }
+
+export const EDITABLE_TABLE_FORMDATA_ID = "entry_stock_id"
 
 export default CreateStocksContainer

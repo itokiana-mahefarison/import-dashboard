@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import {
 	Command,
 	CommandEmpty,
+	CommandGroup,
 	CommandInput,
 	CommandItem,
 	CommandList,
@@ -14,11 +15,37 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "react-query";
 
-export const ComboBox = (props: Props) => {
+export const ComboBox = <T=any>(props: Props<T>) => {
     const [open, setOpen] = React.useState<boolean>(false)
+	const [options, setOptions] = React.useState<Array<OptionsItem> | undefined>(props.options)
+	const [suggestText, setSuggestText] = React.useState<string | undefined>()
 
-	console.log(props.value, props.options)
+	const {data, isSuccess} = useQuery<T>(
+		["ComboBox-fetch-options", suggestText],
+		(): Promise<T> => {
+			if(props.fetchOptions !== undefined){
+				return props.fetchOptions?.(suggestText)
+			}
+
+			return undefined as any
+		},
+		{
+			enabled: props.fetchOptions !== undefined && props.options === undefined,
+		}
+	)
+
+	React.useEffect(() => {
+		setOptions(props.options)
+	}, [])
+
+	React.useEffect(() => {
+		if(isSuccess){
+			const opts = props?.onFetchOptionsSuccess?.(data)
+			setOptions(opts)
+		}
+	}, [props, isSuccess, data])
 
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
@@ -30,37 +57,42 @@ export const ComboBox = (props: Props) => {
                     className="w-full justify-between"
                     >
                     {props.value
-                        ? props?.options?.find((framework) => framework.value === props?.value)?.label
+                        ? options?.find((item) => item.value === props?.value)?.label
                         : "Sélectionner"}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
 			<PopoverContent className="w-auto p-0">
-				<Command onValueChange={(value) => {
-					props.onSelectedOption?.(value);
+				<Command shouldFilter={props.fetchOptions === undefined} onValueChange={(value) => {
 					setOpen(false)
+					props.onSelectedOption?.(value);
 				}}>
-					<CommandInput placeholder="Sélectionner" onValueChange={props.onInputChange} className="h-9" />
+					<CommandInput placeholder="Sélectionner" value={suggestText} onValueChange={setSuggestText} className="h-9" />
 					<CommandList>
 						<CommandEmpty>Aucune correspondance</CommandEmpty>
-						{props.options.map((item, index) => (
-							<CommandItem
-								key={index}
-								value={item.value}
-								onSelect={props.onSelectedOption}
-							>
-								{item.label}
-								<Check
-									className={cn(
-										"ml-auto h-4 w-4",
-										props.value !== undefined &&
-											props.value === item.value
-											? "opacity-100"
-											: "opacity-0"
-									)}
-								/>
-							</CommandItem>
-						))}
+						<CommandGroup>
+							{options?.map((item, index) => (
+								<CommandItem
+									key={index}
+									value={item.value}
+									onSelect={(value) => {
+										props.onSelectedOption?.(value === props.value ? "": value)
+										setOpen(false)
+									}}
+								>
+									{item.label}
+									<Check
+										className={cn(
+											"ml-auto h-4 w-4",
+											props.value !== undefined &&
+												props.value === item.value
+												? "opacity-100"
+												: "opacity-0"
+										)}
+									/>
+								</CommandItem>
+							))}
+						</CommandGroup>
 					</CommandList>
 				</Command>
 			</PopoverContent>
@@ -68,15 +100,15 @@ export const ComboBox = (props: Props) => {
 	);
 };
 
-type Props = Pick<React.ComponentProps<'div'>, 'className'> & {
+type Props<T> = Pick<React.ComponentProps<'div'>, 'className'> & {
 	value?: any;
-	options: Array<OptionsItem>;
+	options?: Array<OptionsItem>;
+	fetchOptions?: (suggest?: string) => Promise<T>
+	onFetchOptionsSuccess?: (options: T) => Array<OptionsItem> | undefined
 	onSelectedOption?: (val: string) => void;
-	onInputChange?: (val: string) => void
-	onBlur?: () => void
 };
 
 export type OptionsItem = {
-	label: string;
-	value: any;
+	label?: string;
+	value?: any;
 };

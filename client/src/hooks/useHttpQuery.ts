@@ -1,14 +1,35 @@
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { useQuery, useQueryClient, UseQueryOptions } from "react-query"
+import qs from "qs";
 
-export const useHttpQuery = (props: Props) => {
+export const useHttpQuery = <T = any>(props: Props<T>) => {
     const client = useQueryClient()
-    const query = useQuery<any>(
-        props.queryKey,
+    const convertData = useCallback((data?: any) => {
+        return qs.stringify(data)
+    }, [props])
+
+    const url = useMemo(() => {
+        if(props.method === 'GET' || props.method === undefined){
+            return `${props.controllerURl}?${convertData(props.data)}`
+        }
+
+        return props.controllerURl
+    }, [props])
+
+    const data = useMemo(() => {
+        if(props.method === undefined || props.method === 'GET'){
+            return;
+        }
+
+        return props.data
+    }, [props])
+    
+    const query = useQuery<T>(
+        [props.queryKey, props.data],
         async () => {
-            const result = await fetch(`${import.meta.env.VITE_API_URL}/${props.controllerURl}`, {
+            const result = await fetch(`${import.meta.env.VITE_API_URL}/${url}`, {
                 method: props.method || "GET",
-                body: props.data && JSON.stringify(props.data)
+                body: data && JSON.stringify(data)
             })
 
             return result.json()
@@ -17,7 +38,7 @@ export const useHttpQuery = (props: Props) => {
     )
 
     const invalidateQuery = useCallback(() => {
-        client.invalidateQueries(props.queryKey)
+        client.invalidateQueries([props.queryKey])
     }, [props.queryKey])
 
     return {
@@ -26,10 +47,10 @@ export const useHttpQuery = (props: Props) => {
     }
 }
 
-type Props = {
+type Props<T> = {
     queryKey: any,
     controllerURl: string
     data?: any
-    method?: string
-    options?: Partial<Omit<UseQueryOptions, "queryKey" | "queryFn">>
+    method?: "GET" | "POST" | "PUT" | "DELETE"
+    options?: Partial<Omit<UseQueryOptions<T>, "queryKey" | "queryFn">>
 }

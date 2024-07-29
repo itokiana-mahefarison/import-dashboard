@@ -1,6 +1,9 @@
+import { useToast } from "@/components/ui/use-toast"
 import { useMutation } from "react-query"
 
 export const useHttpMutation = (props: Props) => {
+    const { toast } = useToast()
+
     return useMutation(
         async (data: any) => {
             const result = await fetch(`${import.meta.env.VITE_API_URL}/${props.controllerUrl}`, {
@@ -12,6 +15,15 @@ export const useHttpMutation = (props: Props) => {
             })
 
             return result.json()
+        },
+        {
+            onError: () => {
+                toast({
+                    title: "Erreur",
+                    description: "Une erreur s'est produite",
+                    variant: "destructive"
+                })
+            }
         }
     )
 }

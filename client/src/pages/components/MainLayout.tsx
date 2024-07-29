@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useFirstRender } from "@/hooks/useFirstRender";
 import { useSplashScreen } from "@/hooks/useSpashScreen";
 import { useSidebarOpenState } from "../hooks/useSidebarOpenState";
+import { Toaster } from "@/components/ui/toaster";
 
 export const MainLayout = () => {
     const [isOpen] = useSidebarOpenState()
@@ -12,6 +13,7 @@ export const MainLayout = () => {
 
     return (
 		<>
+			<Toaster/>
 			<Sidebar />
 			<main
 				className={cn(

@@ -3,14 +3,15 @@ import { Router } from "express"
 import { Produit } from "../entities"
 import _ from "lodash"
 import { FindAllBody } from "./CRUDType"
+import { convertFilter } from "../utils/FilterUtils"
 
 const router = Router()
 
 router.get('/getAll', async (req, res, next) => {
-    const dataFilter = req.body as FindAllBody
+    const dataFilter = req.query as FindAllBody
 
     const produits = await Produit.find({
-        where: dataFilter?.filter,
+        where: convertFilter(dataFilter?.filter),
         select: dataFilter?.select,
         take: dataFilter?.pageSize,
     })

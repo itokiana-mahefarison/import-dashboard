@@ -3,7 +3,6 @@ import dotenv from "dotenv"
 import { initApp, useExpressApp } from "./config"
 
 
-
 // Import all crud controller
 import EntryStockRouter from './crud/EntryStockController'
 import ProduitRouter from './crud/ProduitController'
@@ -39,7 +38,5 @@ app.use(RecapStocksController)
 app.use('/entrystock', EntryStockRouter)
 app.use('/produit', ProduitRouter)
 app.use('/site', SiteRouter)
-
-
 
 initApp(app)

@@ -10,7 +10,7 @@ export const useSkipper = () => {
 
     useEffect(() => {
         shouldSkipRef.current = true
-    })
+    }, [])
 
     return [shouldSkip, skip] as const
 }
