@@ -5,7 +5,6 @@ import {
 	ColumnDef,
 	ColumnFiltersState,
 	PaginationState,
-	RowData,
 	SortingState,
 	VisibilityState,
 	flexRender,

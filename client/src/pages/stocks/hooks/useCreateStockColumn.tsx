@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import { Input } from "@/components/ui/input"
 import _ from "lodash"
 import { CircleMinus, CirclePlus } from "lucide-react"
