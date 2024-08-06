@@ -2,10 +2,12 @@ import { useMutation } from "react-query"
 import { read, utils } from "xlsx"
 import { useImportConfigurationFormData } from "./useImportConfigurationFormData"
 import { useFormatImportData } from "./useFormatImportData"
+import { useToast } from "@/components/ui/use-toast"
 
 export const useImportDataMutation = () => {
     const { formData: configuration } = useImportConfigurationFormData()
     const format = useFormatImportData()
+    const {toast} = useToast()
 
     return useMutation(
         async (data: File) => {
@@ -20,8 +22,6 @@ export const useImportDataMutation = () => {
                 ]
             })
 
-            console.log(excelData)
-
             const result = await fetch(`${import.meta.env.VITE_API_URL}/import`, {
                 method: "POST",
                 headers: {
@@ -32,5 +32,14 @@ export const useImportDataMutation = () => {
 
             return result.json()
         },
+        {
+            onError: () => {
+                toast({
+                    title: "Erreur",
+                    description: "Une erreur s'est produite",
+                    variant: "destructive"
+                })
+            }
+        }
     )
 }

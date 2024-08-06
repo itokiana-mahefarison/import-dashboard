@@ -2,7 +2,7 @@ import { ContentLayout } from "@/pages/components/ContentLayout"
 import { UploadForm } from "../components/UploadForm"
 import { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Plus, X } from "lucide-react"
+import { Plus, X, Loader2 } from "lucide-react"
 import { ImportConfigurationItem } from "../components/ImportConfigurationItem"
 import { Dialog, DialogHeader, DialogFooter, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
@@ -13,6 +13,8 @@ import { Badge } from "@/components/ui/badge"
 import { useImportConfigurationFormData } from "../hooks/useImportConfigurationFormData"
 import { useImportDataMutation } from "../hooks/useImportDataMutation"
 import { useRecapStocksDataQuery } from "../hooks/useRecapStocksDataQuery"
+import { useNavigate } from "react-router-dom"
+import { useToast } from "@/components/ui/use-toast"
 
 const ImportStocksContainer = () => {
     const [file, setFile] = useState<File | undefined>()
@@ -26,13 +28,16 @@ const ImportStocksContainer = () => {
     const [currentDataRange, setCurrentDataRange] = useState<string>()
     const [openDialog, setOpenDialog] = useState<boolean>()
 
-    const { mutate, isSuccess } = useImportDataMutation()
+    const { mutate, isSuccess, isLoading: isLoadingMutation } = useImportDataMutation()
     const { invalidateQuery } = useRecapStocksDataQuery()
 
     const resetForm = () => {
         setSelectedSheet(undefined)
         setCurrentDataRange(undefined)
     }
+
+    const navigate = useNavigate()
+    const {toast} = useToast()
 
     const handleImportData = useCallback(() => {
         if(file){
@@ -46,9 +51,14 @@ const ImportStocksContainer = () => {
 
     useEffect(() => {
         if(isSuccess){
+            toast({
+                title: "Importation des données",
+                description: "Les données ont été importées avec succès"
+            })
             invalidateQuery()
+            navigate("/stocks")
         }
-    }, [])
+    }, [isSuccess])
 
     return (
         <ContentLayout 
@@ -84,8 +94,8 @@ const ImportStocksContainer = () => {
                                     <Plus/>
                                     Ajouter une configuration
                                 </Button>
-                                <Button onClick={handleImportData}>
-                                    Importer les données
+                                <Button onClick={handleImportData} className="gap-2 items-center" disabled={isLoadingMutation || Object.keys(formData).length === 0}>
+                                    {isLoadingMutation && <Loader2/>} Importer les données
                                 </Button>
                             </div>
                         </div>

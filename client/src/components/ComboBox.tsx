@@ -16,14 +16,16 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
+import {v4 as uuid} from "uuid"
 
 export const ComboBox = <T=any>(props: Props<T>) => {
     const [open, setOpen] = React.useState<boolean>(false)
 	const [options, setOptions] = React.useState<Array<OptionsItem> | undefined>(props.options)
 	const [suggestText, setSuggestText] = React.useState<string | undefined>()
+	const id = React.useMemo(() => uuid(), [])
 
 	const {data, isSuccess} = useQuery<T>(
-		["ComboBox-fetch-options", suggestText],
+		["ComboBox-fetch-options", id, suggestText],
 		(): Promise<T> => {
 			if(props.fetchOptions !== undefined){
 				return props.fetchOptions?.(suggestText)

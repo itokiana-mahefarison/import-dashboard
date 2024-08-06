@@ -56,9 +56,10 @@ export const useCreateStockColumn = () => {
                     return (
                         <ComboBox
                             value={initialValue}
-                            onSelectedOption={(val) => table.options.meta?.updateData(row.index, "produit", val)}
+                            onSelectedOption={(val) => table.options.meta?.updateData(row.index, "produit", {id: val})}
                             fetchOptions={fetchProduitFn}
                             onFetchOptionsSuccess={(options) => {
+                                console.log(options)
                                 return options.data?.map((item) => ({label: item.label, value: item.id}))
                             }}
                         />

@@ -11,7 +11,7 @@ export const useFetchProduitFn = () => {
             }
         })
 
-        const result = await fetch(`${import.meta.env.VITE_API_URL}/site/getAll?${queryString}`, {
+        const result = await fetch(`${import.meta.env.VITE_API_URL}/produit/getAll?${queryString}`, {
             method: "GET",
         })
 
