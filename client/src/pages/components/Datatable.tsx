@@ -32,7 +32,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { useSkipper } from "@/hooks/useSkipper";
 
 export const Datatable = ({
 	data,
@@ -51,7 +50,6 @@ export const Datatable = ({
 	});
 	const [columnVisibility, setColumnVisibility] =
 		React.useState<VisibilityState>({});
-	const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
 	const table = useReactTable({
 		data,
@@ -67,10 +65,8 @@ export const Datatable = ({
 		getFilteredRowModel: getFilteredRowModel(),
 		onColumnVisibilityChange: setColumnVisibility,
 		onPaginationChange: !props.noPagination ? setPagination : undefined,
-		autoResetPageIndex,
 		meta: {
 			updateData: (index, key, value) => {
-				skipAutoResetPageIndex();
 				props.onUpdateRow?.(index, key, value);
 			},
 		},
