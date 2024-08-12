@@ -1,48 +1,30 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { useCallback, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import _ from "lodash"
 import { CircleMinus, CirclePlus } from "lucide-react"
-import { v4 as uuid } from "uuid"
 import { ComboBox } from "@/components/ComboBox"
 import { TEntryStock } from "@/types/TEntryStock"
-import { useFormData } from "@/hooks/useFormData"
-import { EDITABLE_TABLE_FORMDATA_ID } from "../containers/CreateStocksContainer"
 import { useFetchProduitFn } from "./useFetchProduitFn"
+import { Textarea } from "@/components/ui/textarea"
 
 export const useCreateStockColumn = () => {
-    const { formData, setFormData } = useFormData<Array<TEntryStock>>({
-        id: EDITABLE_TABLE_FORMDATA_ID
-    })
-
-    const handleAddRow = useCallback(() => {
-        setFormData((v) => ([
-            ...v,
-            { id: uuid() }
-        ]))
-    }, [formData])
-
-    const handleRemoveRow = useCallback((index: number) => {
-        const temp = _.clone(formData)
-        temp.splice(index, 1)
-
-        setFormData(temp)
-    }, [formData])
+    
 
     const columns = useMemo((): Array<ColumnDef<TEntryStock>> => {
         return [
             {
                 accessorKey: 'actions',
                 header: '',
-                cell: ({row}) => {
-                    if(row.index === formData?.length - 1){
+                cell: ({row, table}) => {
+                    if(row.index === table.getRowCount() - 1){
                         return (
-                            <CirclePlus className=" cursor-pointer" onClick={handleAddRow}/>
+                            <CirclePlus className=" cursor-pointer" onClick={table?.options?.meta?.addRow}/>
                         )
                     }
 
                     return (
-                        <CircleMinus className=" cursor-pointer" onClick={() => handleRemoveRow(row.index)}/>
+                        <CircleMinus className=" cursor-pointer" onClick={() => table?.options?.meta?.removeRow?.(row.index)}/>
                     )
                 }
             },
@@ -55,11 +37,11 @@ export const useCreateStockColumn = () => {
 
                     return (
                         <ComboBox
+                            className="w-[170px]"
                             value={initialValue}
-                            onSelectedOption={(val) => table.options.meta?.updateData(row.index, "produit", {id: val})}
+                            onSelectedOption={(val) => table.options.meta?.updateData?.(row.index, "produit", {id: val})}
                             fetchOptions={fetchProduitFn}
                             onFetchOptionsSuccess={(options) => {
-                                console.log(options)
                                 return options.data?.map((item) => ({label: item.label, value: item.id}))
                             }}
                         />
@@ -72,9 +54,9 @@ export const useCreateStockColumn = () => {
                 cell: ({row}) => {
                     return (
                         <Input
-                            value={row?.original?.produit?.id}
+                            value={row?.original?.produit?.id ?? ""}
                             readOnly
-                            className="cursor-default"
+                            className="cursor-not-allowed w-[150px]"
                         />
                     )
                 }
@@ -94,13 +76,51 @@ export const useCreateStockColumn = () => {
             {
                 accessorKey: 'observation',
                 header: "Observations",
+                cell: ({ row, table, getValue, column }) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState(initialValue)
+        
+                    useEffect(() => {
+                        setValue(initialValue)
+                    }, [initialValue])
+        
+                    const handleOnBlur = () => {
+                        table.options.meta?.updateData?.(row.index, column.id, value)
+                    }
+        
+                    return (
+                        <Textarea
+                            value={value ?? ""}
+                            onChange={(e) => setValue(e.target.value)}
+                            onBlur={handleOnBlur}/>
+                    )
+                }
             },
             {
                 accessorKey: 'comments',
                 header: 'Autres commentaires',
+                cell: ({ row, table, getValue, column }) => {
+                    const initialValue = getValue() as string
+                    const [value, setValue] = useState(initialValue)
+        
+                    useEffect(() => {
+                        setValue(initialValue)
+                    }, [initialValue])
+        
+                    const handleOnBlur = () => {
+                        table.options.meta?.updateData?.(row.index, column.id, value)
+                    }
+        
+                    return (
+                        <Textarea
+                            value={value ?? ""}
+                            onChange={(e) => setValue(e.target.value)}
+                            onBlur={handleOnBlur}/>
+                    )
+                }
             }
         ]
-    }, [formData])
+    }, [])
 
     return columns
 }

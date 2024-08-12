@@ -12,17 +12,31 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import { useSkipper } from "@/hooks/useSkipper";
 import { useFormData } from "@/hooks/useFormData";
 import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { v4 as uuid } from "uuid"
+import _ from 'lodash'
 
 export const EditableTable = <T=Record<string,any>>(props: Props<T>) => {
-	const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
-    const {formData, setFormData} = useFormData<Array<T>>({
+    const {formData, setFormData, reset} = useFormData<Array<T>>({
         formData: props?.defaultValue,
         id: props.id
     })
+
+	const handleAddRow = useCallback(() => {
+        setFormData((v) => ([
+            ...v,
+            { id: uuid() } as T
+        ]))
+    }, [formData])
+
+    const handleRemoveRow = useCallback((index: number) => {
+        const temp = _.clone(formData)
+        temp.splice(index, 1)
+
+        setFormData(temp)
+    }, [formData])
 
     const handleInputChange = useCallback((rowIndex: number, key: string, val: any) => {
         setFormData((old) =>
@@ -42,20 +56,20 @@ export const EditableTable = <T=Record<string,any>>(props: Props<T>) => {
 		data: formData,
 		columns: props.columns,
         defaultColumn: props.defaultColumn,
-		rowCount: formData?.length,
 		getCoreRowModel: getCoreRowModel(),
-		autoResetPageIndex,
+		autoResetPageIndex: false,
 		meta: {
 			updateData: (index, key, value) => {
-				skipAutoResetPageIndex();
 				handleInputChange(index, key, value);
 			},
+			addRow: handleAddRow,
+			removeRow: handleRemoveRow
 		},
 	});
 
 	return (
 		<div className="w-full grid gap-3">
-			<div className="rounded-md border">
+			<div className="rounded-md border overflow-auto">
 				<Table>
 					<TableHeader>
 						{table.getHeaderGroups().map((headerGroup) => (
@@ -101,6 +115,7 @@ export const EditableTable = <T=Record<string,any>>(props: Props<T>) => {
 					onClick={() => {
 						const data = props?.onBeforeSaving?.(formData) || formData
 						props.onSaving?.(data)
+						reset()
 					}}
                 >
                     Sauvegarder

@@ -13,15 +13,28 @@ import { ColumnDef } from "@tanstack/react-table"
 import { TEntryStock } from "@/types/TEntryStock"
 import { Input } from "@/components/ui/input"
 import { useHttpMutation } from "@/hooks/useHttpMutation"
+import { useToast } from "@/components/ui/use-toast"
 
 const CreateStocksContainer = () => {
     const [site, setSite] = useState<TSite>()
     const [period, setPeriod] = useState<string>()
     const columns = useCreateStockColumn()
-    const { mutate } = useHttpMutation({
+    const {toast} = useToast()
+    const { mutate, isSuccess, data } = useHttpMutation({
         method: "POST",
         controllerUrl: "entrystock/insertBatch"
     })
+
+    useEffect(() => {
+        if(isSuccess){
+            setSite(undefined)
+            setPeriod(undefined)
+            toast({
+                title: "Creation des stocks",
+                description: `${data?.rows} lignes d'entrées de stocks ont été ajoutés`
+            })
+        }
+    }, [isSuccess, data])
 
     const fetchSiteFn = useFetchSiteFn()
 
@@ -36,19 +49,17 @@ const CreateStocksContainer = () => {
                 }, [initialValue])
     
                 const handleOnBlur = () => {
-                    table.options.meta?.updateData(row.index, column.id, value)
+                    table.options.meta?.updateData?.(row.index, column.id, value)
                 }
     
                 return (
                     <Input
-                        value={value}
+                        className="w-[100px]"
+                        value={value ?? ""}
                         onChange={(e) => setValue(e.target.value)}
                         onBlur={handleOnBlur}/>
                 )
-            },
-            enableHiding: false,
-            enableSorting: false,
-            enableColumnFilter: false
+            }
         }
     }, [])
     return (

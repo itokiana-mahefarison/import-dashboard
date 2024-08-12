@@ -56,11 +56,11 @@ export const ComboBox = <T=any>(props: Props<T>) => {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="w-full justify-between"
+                    className={cn("w-full justify-between gap-1", props.className)}
                     >
-                    {props.value
+                    <span className="overflow-hidden text-ellipsis">{props.value
                         ? options?.find((item) => item.value === props?.value)?.label
-                        : "Sélectionner"}
+                        : "Sélectionner"}</span>
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
