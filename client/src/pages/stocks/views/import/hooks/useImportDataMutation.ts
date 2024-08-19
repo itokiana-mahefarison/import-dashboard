@@ -1,8 +1,8 @@
 import { useMutation } from "react-query"
 import { read, utils } from "xlsx"
+import { useToast } from "@/components/ui/use-toast"
 import { useImportConfigurationFormData } from "./useImportConfigurationFormData"
 import { useFormatImportData } from "./useFormatImportData"
-import { useToast } from "@/components/ui/use-toast"
 
 export const useImportDataMutation = () => {
     const { formData: configuration } = useImportConfigurationFormData()

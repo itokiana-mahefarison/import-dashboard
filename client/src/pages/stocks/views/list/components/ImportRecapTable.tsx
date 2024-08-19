@@ -1,5 +1,5 @@
 import { Datatable } from "@/pages/components/Datatable"
-import { useRecapStocksDataQuery } from "../hooks/useRecapStocksDataQuery"
+import { useRecapStocksDataQuery } from "../../../hooks/useRecapStocksDataQuery"
 import { useRecapStocksDataColumns } from "../hooks/useRecapStocksDataColumns"
 import { useSitesQuery } from "@/pages/hooks/useSitesQuery"
 import _ from "lodash"

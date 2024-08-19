@@ -3,10 +3,8 @@ import { DatePicker } from "@/components/DatePicker"
 import { Label } from "@/components/ui/label"
 import { TSite } from "@/types/TSite"
 import { useEffect, useMemo, useState } from "react"
-import { useCreateStockColumn } from "../hooks/useCreateStockColumn"
 import { ContentLayout } from "@/pages/components/ContentLayout"
 import _ from "lodash"
-import { useFetchSiteFn } from "../hooks/useFetchSiteFn"
 import { EditableTable } from "@/pages/components/EditableTable"
 import { v4 as uuid } from "uuid"
 import { ColumnDef } from "@tanstack/react-table"
@@ -14,6 +12,9 @@ import { TEntryStock } from "@/types/TEntryStock"
 import { Input } from "@/components/ui/input"
 import { useHttpMutation } from "@/hooks/useHttpMutation"
 import { useToast } from "@/components/ui/use-toast"
+import { useCreateStockColumn } from "../hooks/useCreateStockColumn"
+import { useFetchSiteFn } from "../hooks/useFetchSiteFn"
+import { useRecapStocksDataQuery } from "@/pages/stocks/hooks/useRecapStocksDataQuery"
 
 const CreateStocksContainer = () => {
     const [site, setSite] = useState<TSite>()
@@ -25,10 +26,13 @@ const CreateStocksContainer = () => {
         controllerUrl: "entrystock/insertBatch"
     })
 
+    const { invalidateQuery } = useRecapStocksDataQuery()
+
     useEffect(() => {
         if(isSuccess){
             setSite(undefined)
             setPeriod(undefined)
+            invalidateQuery()
             toast({
                 title: "Creation des stocks",
                 description: `${data?.rows} lignes d'entrées de stocks ont été ajoutés`

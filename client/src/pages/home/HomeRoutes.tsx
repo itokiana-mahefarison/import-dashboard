@@ -5,11 +5,11 @@ const HomeContainer = React.lazy(() => import('./containers/HomeContainer'))
 
 const routes: Array<RouteObject> = [
     {
-        path: "/",
+        path: "",
         element: <HomeContainer/>
     },
     {
-        path: "/dashboard",
+        path: "dashboard",
         element: <HomeContainer/>
     }
 ]

@@ -3,7 +3,6 @@ import { UploadForm } from "../components/UploadForm"
 import { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus, X, Loader2 } from "lucide-react"
-import { ImportConfigurationItem } from "../components/ImportConfigurationItem"
 import { Dialog, DialogHeader, DialogFooter, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -11,10 +10,11 @@ import { Select, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValu
 import { useExcelSheets } from "@/hooks/xlsx/useExcelSheets"
 import { Badge } from "@/components/ui/badge"
 import { useImportConfigurationFormData } from "../hooks/useImportConfigurationFormData"
-import { useImportDataMutation } from "../hooks/useImportDataMutation"
-import { useRecapStocksDataQuery } from "../hooks/useRecapStocksDataQuery"
+import { useRecapStocksDataQuery } from "../../../hooks/useRecapStocksDataQuery"
 import { useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
+import { useImportDataMutation } from "../hooks/useImportDataMutation"
+import { ImportConfigurationItem } from "../components/ImportConfigurationItem"
 
 const ImportStocksContainer = () => {
     const [file, setFile] = useState<File | undefined>()
