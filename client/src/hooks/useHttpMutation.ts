@@ -1,11 +1,11 @@
 import { useToast } from "@/components/ui/use-toast"
 import { useMutation } from "react-query"
 
-export const useHttpMutation = (props: Props) => {
+export const useHttpMutation = <T=any>(props: Props) => {
     const { toast } = useToast()
 
     return useMutation(
-        async (data: any) => {
+        async (data: T) => {
             const result = await fetch(`${import.meta.env.VITE_API_URL}/${props.controllerUrl}`, {
                 method: props.method || 'POST',
                 headers: {

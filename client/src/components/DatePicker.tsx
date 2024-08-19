@@ -31,7 +31,9 @@ export const DatePicker = (props: Props) => {
                     locale={fr}
 					mode="single"
 					selected={moment(props.value).toDate()}
-					onSelect={(val) => props.onChange?.(moment(val).toISOString())}
+					onSelect={(val) => {
+						props.onChange?.(moment(val).toISOString())
+					}}
 					initialFocus
 				/>
 			</PopoverContent>

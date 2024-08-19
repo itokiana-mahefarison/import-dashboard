@@ -18,7 +18,7 @@ import { useToast } from "@/components/ui/use-toast"
 const CreateStocksContainer = () => {
     const [site, setSite] = useState<TSite>()
     const [period, setPeriod] = useState<string>()
-    const columns = useCreateStockColumn()
+    const columns = useCreateStockColumn(period)
     const {toast} = useToast()
     const { mutate, isSuccess, data } = useHttpMutation({
         method: "POST",
@@ -101,26 +101,30 @@ const CreateStocksContainer = () => {
                         onChange={(val) => setPeriod(val)}
                     />
                 </div>
-                <EditableTable
-                    id={EDITABLE_TABLE_FORMDATA_ID}
-                    defaultColumn={defaultColumn}
-                    columns={columns}
-                    defaultValue={[
-                        {
-                            id: uuid()
-                        }
-                    ]}
-                    onBeforeSaving={(data) => {
-                        return data.map((item) => {
-                            return {
-                                ...item,
-                                site,
-                                entryDate: period
-                            }
-                        })
-                    }}
-                    onSaving={(data) => mutate(data)}
-                />
+                {
+                    site && period && (
+                        <EditableTable
+                            id={EDITABLE_TABLE_FORMDATA_ID}
+                            defaultColumn={defaultColumn}
+                            columns={columns}
+                            defaultValue={[
+                                {
+                                    id: uuid()
+                                }
+                            ]}
+                            onBeforeSaving={(data) => {
+                                return data.map((item) => {
+                                    return {
+                                        ...item,
+                                        site,
+                                        entryDate: period
+                                    }
+                                })
+                            }}
+                            onSaving={(data) => mutate(data)}
+                        />
+                    )
+                }
                 
             </div>
         </ContentLayout>
