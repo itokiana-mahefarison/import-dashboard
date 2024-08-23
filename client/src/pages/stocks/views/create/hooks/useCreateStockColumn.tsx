@@ -44,6 +44,7 @@ export const useCreateStockColumn = (period?: string) => {
 
                     return (
                         <ComboBox
+                            id="produit_data"
                             className="w-[170px]"
                             value={initialValue}
                             onSelectedOption={(val) => table.options.meta?.updateData?.(row.index, "produit", {id: val})}
@@ -73,7 +74,7 @@ export const useCreateStockColumn = (period?: string) => {
                 header: 'Prix du produit',
                 cell: ({row, table}) => {
                     const fetchPrixProduitFn = useFetchPrixProduitFn(row?.original?.produit?.id, period)
-                    const initialValue = row.original?.produit?.prix?.[0]?.id
+                    const initialValue = row.original?.prix?.id
 
                     const { mutate, isSuccess, data } = useHttpMutation<TPrixProduit>({
                         method: "POST",
@@ -84,13 +85,10 @@ export const useCreateStockColumn = (period?: string) => {
 
                     useEffect(() => {
                         if(isSuccess){
-                            table.options.meta?.updateData?.(row.index, "produit", {
-                                ...row?.original?.produit,
-                                prix: [{id: data?.id}]
-                            })
+                            table.options.meta?.updateData?.(row.index, "prix", {id: data?.id})
                             queryClient.invalidateQueries(["Prix.Produit.Fetch.Combobox"])
                         }
-                    }, [isSuccess])
+                    }, [isSuccess, data])
 
                     const handleOnAddPrice = useCallback((prix?: string) => {
                         if(prix === undefined){

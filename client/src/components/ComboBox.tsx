@@ -22,12 +22,12 @@ import { useDebounce } from "@/hooks/useDebounce";
 export const ComboBox = <T=any>(props: Props<T>) => {
     const [open, setOpen] = React.useState<boolean>(false)
 	const [options, setOptions] = React.useState<Array<OptionsItem> | undefined>(props.options)
-	const [suggestText, setSuggestText] = React.useState<string | undefined>()
+	const [suggestText, setSuggestText] = React.useState<string>("")
 	const id = React.useMemo(() => props?.id || uuid(), [props])
 	const debounce = useDebounce()
 
 	const {data, isSuccess} = useQuery<T>(
-		["ComboBox-fetch-options", id, suggestText, props.value],
+		[id, "ComboBox_fetch_options", suggestText],
 		(): Promise<T> => {
 			if(props.fetchOptions !== undefined){
 				return props.fetchOptions?.(suggestText)

@@ -26,23 +26,7 @@ RecapStocksController.get('/recap', async (req, res, next) => {
                 }
             }))
 
-            const lastPrix = await PrixProduit.find({
-                where: {
-                    produit: {
-                        id: product.id
-                    }
-                },
-                order: {
-                    createdAt: "DESC"
-                },
-                take: 1
-            })
-
-            if(lastPrix?.length === 0){
-                recapRow["prix"] = 0
-            }else{
-                recapRow["prix"] = lastPrix[0].prix
-            }
+            // To-do get total amount somme ( poidNet * prix )
 
             return recapRow
         }))

@@ -1,3 +1,4 @@
+import { TPrixProduit } from "./TPrixProduit"
 import { TProduit } from "./TProduit"
 import { TSite } from "./TSite"
 
@@ -11,6 +12,7 @@ export type TEntryStock = {
     observation?: string
     comments?: string
     site?: TSite
+    prix?: TPrixProduit
 }
 
 export type TEntryStockResult = {

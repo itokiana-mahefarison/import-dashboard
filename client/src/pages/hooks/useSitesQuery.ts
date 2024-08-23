@@ -4,7 +4,7 @@ import { TSiteResult } from "@/types/TSite"
 export const useSitesQuery = (data?: any) => {
     return useHttpQuery<TSiteResult>({
         controllerURl: "site/getAll",
-        queryKey: ['site-data'],
+        queryKey: ['site_data'],
         options: {
             suspense: true
         },

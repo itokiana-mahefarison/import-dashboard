@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
 import { Produit } from "./Produit";
 import { Site } from "./Site";
+import { PrixProduit } from "./PrixProduit";
 
 @Entity()
 export class EntryStock extends BaseEntity{
@@ -32,4 +33,8 @@ export class EntryStock extends BaseEntity{
     @ManyToOne(() => Site, (site) => site.entriesStock, {eager: true})
     @JoinColumn()
     site?: Site | null
+
+    @OneToOne(() => PrixProduit, {eager: true})
+    @JoinColumn()
+    prix?: PrixProduit | null
 }

@@ -14,6 +14,9 @@ router.get('/getAll', async (req, res, next) => {
         where: convertFilter(dataFilter?.filter),
         select: dataFilter?.select,
         take: dataFilter?.pageSize,
+        order: {
+            label: "ASC"
+        }
     })
 
     return res.status(200).json({
