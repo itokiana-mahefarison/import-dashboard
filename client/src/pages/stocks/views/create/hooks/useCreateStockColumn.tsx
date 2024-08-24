@@ -110,6 +110,10 @@ export const useCreateStockColumn = (period?: string) => {
                     return (
                         <ComboBox
                             id="Prix.Produit.Fetch.Combobox"
+                            dependencies={{
+                                product: row?.original?.produit?.id,
+                                period
+                            }}
                             className="w-[170px]"
                             value={initialValue}
                             onSelectedOption={(val, option) => {

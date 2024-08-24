@@ -27,7 +27,7 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 	const debounce = useDebounce()
 
 	const {data, isSuccess} = useQuery<T>(
-		[id, "ComboBox_fetch_options", suggestText],
+		[id, "ComboBox_fetch_options", suggestText, props.dependencies],
 		(): Promise<T> => {
 			if(props.fetchOptions !== undefined){
 				return props.fetchOptions?.(suggestText)
@@ -128,6 +128,7 @@ type Props<T> = Pick<React.ComponentProps<'div'>, 'className'> & {
 	onDefaultValue?: (options?: Array<OptionsItem>) => any
 	placeholder?: string
 	prefix?: React.ReactNode
+	dependencies?: any
 };
 
 export type OptionsItem = {
