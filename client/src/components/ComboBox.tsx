@@ -69,7 +69,7 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 							props.prefix
 						}
 					</div>
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <ChevronsUpDown className="h-4 w-4 opacity-50" />
                 </Button>
             </PopoverTrigger>
 			<PopoverContent className="w-auto p-0">
@@ -77,7 +77,7 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 					setOpen(false)
 					props.onSelectedOption?.(value);
 				}}>
-					<CommandInput placeholder="Sélectionner" onValueChange={(value) => debounce(() => setSuggestText(value), 200)} className="h-9" />
+					<CommandInput placeholder="Sélectionner" onValueChange={(value) => debounce(() => setSuggestText(value), 100)} className="h-9" />
 					<CommandList>
 						{
 							props?.onRenderNoResult ?

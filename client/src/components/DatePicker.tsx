@@ -10,10 +10,12 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import moment from "moment";
+import { useState } from "react";
 
 export const DatePicker = (props: Props) => {
+	const [open, setOpen] = useState<boolean>(false)
 	return (
-		<Popover>
+		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
 					variant={"outline"}
@@ -33,6 +35,7 @@ export const DatePicker = (props: Props) => {
 					selected={moment(props.value).toDate()}
 					onSelect={(val) => {
 						props.onChange?.(moment(val).toISOString())
+						setOpen(false)
 					}}
 					initialFocus
 				/>
