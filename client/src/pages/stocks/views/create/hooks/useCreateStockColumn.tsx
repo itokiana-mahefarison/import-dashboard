@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import _ from "lodash"
-import { CircleMinus, CirclePlus } from "lucide-react"
+import { CircleMinus, CirclePlus, Plus } from "lucide-react"
 import { ComboBox } from "@/components/ComboBox"
 import { TEntryStock } from "@/types/TEntryStock"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,6 +14,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useQueryClient } from "react-query"
 import { useFetchProduitFn } from "./useFetchProduitFn"
 import { useFetchPrixProduitFn } from "./useFetchPrixProduitFn"
+import { useNavigate } from "react-router-dom"
 
 export const useCreateStockColumn = (period?: string) => {
     
@@ -41,18 +42,26 @@ export const useCreateStockColumn = (period?: string) => {
                 cell: ({row, table}) => {
                     const fetchProduitFn = useFetchProduitFn()
                     const initialValue = row.original?.produit?.id
+                    const navigate = useNavigate()
 
                     return (
-                        <ComboBox
-                            id="produit_data"
-                            className="w-[170px]"
-                            value={initialValue}
-                            onSelectedOption={(val) => table.options.meta?.updateData?.(row.index, "produit", {id: val})}
-                            fetchOptions={fetchProduitFn}
-                            onFetchOptionsSuccess={(options) => {
-                                return options.data?.map((item) => ({label: item.label, value: item.id}))
-                            }}
-                        />
+                        <div className="flex items-center gap-2">
+                            <ComboBox
+                                id="produit_data"
+                                className="w-[170px]"
+                                value={initialValue}
+                                onSelectedOption={(val) => table.options.meta?.updateData?.(row.index, "produit", {id: val})}
+                                fetchOptions={fetchProduitFn}
+                                onFetchOptionsSuccess={(options) => {
+                                    return options.data?.map((item) => ({label: item.label, value: item.id}))
+                                }}
+                            />
+                            <Button className="h-9" onClick={() => navigate("product-create")}>
+                                <Plus/>
+                            </Button>
+
+                        </div>
+                        
                     )
                 }
             },
@@ -86,7 +95,7 @@ export const useCreateStockColumn = (period?: string) => {
                     useEffect(() => {
                         if(isSuccess){
                             table.options.meta?.updateData?.(row.index, "prix", {id: data?.id})
-                            queryClient.invalidateQueries(["Prix.Produit.Fetch.Combobox"])
+                            queryClient.invalidateQueries("prix_produit_data")
                         }
                     }, [isSuccess, data])
 
@@ -105,11 +114,11 @@ export const useCreateStockColumn = (period?: string) => {
                             produit: {id: row?.original?.produit?.id},
                             createdAt: period
                         })
-                    }, [row?.original])
+                    }, [row?.original, period])
 
                     return (
                         <ComboBox
-                            id="Prix.Produit.Fetch.Combobox"
+                            id="prix_produit_data"
                             dependencies={{
                                 product: row?.original?.produit?.id,
                                 period
@@ -137,10 +146,13 @@ export const useCreateStockColumn = (period?: string) => {
                                     value: item.id
                                 }))
                             }}
-                            onRenderNoResult={(prix) => row.original?.produit?.id ? (
+                            onRenderNoResult={(prix, closeDialog) => row.original?.produit?.id ? (
                                 <div className="grid gap-2 justify-center max-w-[200px] px-2">
                                     <span className="text-center text-xs">* Veuillez inscrire un nouveau montant</span>
-                                    <Button onClick={() => handleOnAddPrice(prix)}>
+                                    <Button onClick={() => {
+                                        handleOnAddPrice(prix)
+                                        closeDialog?.()
+                                    }}>
                                         Ajouter un nouveau prix
                                     </Button>
                                 </div>
@@ -189,7 +201,7 @@ export const useCreateStockColumn = (period?: string) => {
                             value={value ?? ""}
                             onChange={(e) => setValue(e.target.value)}
                             onBlur={handleOnBlur}
-                            className="w-[200px]"
+                            className="min-w-[200px] min-h-[40px]"
                             />
                     )
                 }
@@ -214,7 +226,7 @@ export const useCreateStockColumn = (period?: string) => {
                             value={value ?? ""}
                             onChange={(e) => setValue(e.target.value)}
                             onBlur={handleOnBlur}
-                            className="w-[200px]"/>
+                            className="min-w-[200px] min-h-[40px]"/>
                     )
                 }
             }

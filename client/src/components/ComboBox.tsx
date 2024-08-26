@@ -51,6 +51,10 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 		}
 	}, [props, isSuccess, data])
 
+	const placeholder = React.useMemo(() => {
+		return props.placeholder || "Sélectionner"
+	}, [props])
+
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
@@ -62,8 +66,8 @@ export const ComboBox = <T=any>(props: Props<T>) => {
                     >
 					<div className="w-full flex justify-between gap-1">
 						<span className="overflow-hidden text-ellipsis">{props.value
-							? options?.find((item) => item.value === props?.value)?.label
-							: props.placeholder || "Sélectionner"}
+							? options?.find((item) => item.value === props?.value)?.label || placeholder
+							: placeholder}
 						</span>
 						{
 							props.prefix
@@ -82,7 +86,10 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 						{
 							props?.onRenderNoResult ?
 							<CommandEmpty className="flex justify-center items-center pt-2">
-								{props?.onRenderNoResult(suggestText)}
+								{props?.onRenderNoResult(suggestText, () => {
+									setOpen(false)
+									setSuggestText("")
+								})}
 							</CommandEmpty> : 
 							<CommandEmpty>Aucune correspondance</CommandEmpty>
 						}
@@ -124,7 +131,7 @@ type Props<T> = Pick<React.ComponentProps<'div'>, 'className'> & {
 	onFetchOptionsSuccess?: (options: T) => Array<OptionsItem> | undefined
 	onSelectedOption?: (val: any, options?: OptionsItem) => void;
 	onEnableFetch?: () => boolean
-	onRenderNoResult?: (suggest?: string) => React.ReactNode
+	onRenderNoResult?: (suggest?: string, closeDialog?: () => void) => React.ReactNode
 	onDefaultValue?: (options?: Array<OptionsItem>) => any
 	placeholder?: string
 	prefix?: React.ReactNode

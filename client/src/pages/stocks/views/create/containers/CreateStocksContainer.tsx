@@ -18,6 +18,7 @@ import { useRecapStocksDataQuery } from "@/pages/stocks/hooks/useRecapStocksData
 import { Outlet, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
+import { useFormData } from "@/hooks/useFormData"
 
 const CreateStocksContainer = () => {
     const navigate = useNavigate()
@@ -71,6 +72,19 @@ const CreateStocksContainer = () => {
             }
         }
     }, [])
+ 
+    const { setFormData } = useFormData<Array<TEntryStock>>({
+        id: EDITABLE_TABLE_FORMDATA_ID
+    })
+
+    useEffect(() => {
+        setFormData([
+            {
+                id: uuid()
+            }
+        ])
+    }, [site, period])
+
     return (
         <ContentLayout
             title="Insérer un tableau de stocks"
