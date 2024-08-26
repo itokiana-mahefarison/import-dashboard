@@ -6,7 +6,7 @@ export class PrixProduit extends BaseEntity {
     @PrimaryGeneratedColumn()
     id?: number
 
-    @Column({default: 0})
+    @Column({default: 0, type: "float"})
     prix?: number
 
     @CreateDateColumn()

@@ -110,11 +110,13 @@ export const useCreateStockColumn = (period?: string) => {
                         }
 
                         mutate({
-                            prix: parseInt(prix),
+                            prix: parseFloat(prix?.trim()?.replace(/\s/g, '')?.replace(/,/g, '.')),
                             produit: {id: row?.original?.produit?.id},
                             createdAt: period
                         })
                     }, [row?.original, period])
+
+                    const currencryFormater = new Intl.NumberFormat('fr-FR');
 
                     return (
                         <ComboBox
@@ -136,11 +138,11 @@ export const useCreateStockColumn = (period?: string) => {
                             onEnableFetch={() => row?.original?.produit?.id !== undefined}
                             onFetchOptionsSuccess={(options) => {
                                 return options.data?.map((item) => ({
-                                    label: `${item.prix}`,
+                                    label: currencryFormater.format(item.prix!),
                                     renderLabel: (
                                         <p> 
                                             {item?.createdAt && <span className="text-xs bg-foreground text-background mr-2 py-[1px] px-2 rounded-full">{moment(item.createdAt).format("DD/MM/YYYY")}</span>} 
-                                            <span className="text-lg">{`${item.prix} Ar`}</span>
+                                            <span className="text-lg">{`${currencryFormater.format(item.prix!)} Ar`}</span>
                                         </p>
                                     ), 
                                     value: item.id
