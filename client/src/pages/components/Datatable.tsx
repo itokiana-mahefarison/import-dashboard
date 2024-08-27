@@ -168,7 +168,7 @@ export const Datatable = ({
 									}
 								>
 									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
+										<TableCell key={cell.id} className={(cell.column.columnDef.meta as any)?.className}>
 											{flexRender(
 												cell.column.columnDef.cell,
 												cell.getContext()

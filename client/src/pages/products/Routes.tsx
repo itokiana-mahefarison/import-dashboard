@@ -1,12 +1,15 @@
-import React from "react";
-import { RouteObject } from "react-router-dom";
-
-const ProductContainer = React.lazy(() => import('./containers/ProductsContainer'))
+import { Outlet, RouteObject } from "react-router-dom";
+import ProductListRoutes from "./views/list/Routes"
+import ProductDetailsRoutes from "./views/details/Routes"
 
 const routes: Array<RouteObject> = [
     {
         path: 'products',
-        element: <ProductContainer/>
+        element: <Outlet/>,
+        children: [
+            ...ProductListRoutes,
+            ...ProductDetailsRoutes
+        ]
     }
 ]
 

@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+
+@layer components{
+    .tabs, .tabs .item{
+        position: relative;;
+    }
+
+    .tabs::after, .tabs .item::after{
+        @apply bg-primary -bottom-3 absolute left-0;
+        height: 2px;
+    }
+
+    .tabs::after{
+        content: "";
+        width: 100%;
+        opacity: .1;
+    }
+
+    .tabs .item {
+        @apply px-2 text-muted-foreground transition-colors
+    }
+
+    .tabs .item.active, .tabs .item:hover{
+        @apply text-foreground
+    }
+
+    .tabs .item::after{
+        @apply bg-transparent transition-colors;
+        content: "";
+        width: 100%;
+    }
+
+    .tabs .item:hover::after, .tabs .item.active::after{
+        @apply bg-primary
+    }
+}
