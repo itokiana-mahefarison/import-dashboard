@@ -81,7 +81,7 @@ export const Datatable = ({
 	return (
 		<div className="w-full">
 			{!hideFilterInput && !hideFitlerColumn && (
-				<div className="flex items-center py-4">
+				<div className="flex items-center justify-between py-4">
 					{!hideFilterInput && (
 						<Input
 							placeholder="Rechercher..."
@@ -98,11 +98,12 @@ export const Datatable = ({
 							className="max-w-sm"
 						/>
 					)}
+					<div className="flex items-center gap-2">
 					{!hideFitlerColumn && (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button variant="outline" className="ml-auto">
-									Colonnes{" "}
+								<Button variant="outline">
+									Colonnes
 									<ChevronDown className="ml-2 h-4 w-4" />
 								</Button>
 							</DropdownMenuTrigger>
@@ -122,13 +123,18 @@ export const Datatable = ({
 													)
 												}
 											>
-												{column.id}
+												{column?.columnDef?.header as string}
 											</DropdownMenuCheckboxItem>
 										);
 									})}
 							</DropdownMenuContent>
 						</DropdownMenu>
 					)}
+					{
+						props.tools
+					}
+					</div>
+					
 				</div>
 			)}
 			<div className="rounded-md border">
@@ -219,4 +225,5 @@ type Props<T> = {
 	onUpdateRow?: (index: number, key: string, value: any) => any;
 	noPagination?: boolean;
 	pageSize?: number;
+	tools?: React.ReactNode
 };

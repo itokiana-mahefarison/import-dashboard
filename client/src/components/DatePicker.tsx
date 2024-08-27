@@ -34,7 +34,7 @@ export const DatePicker = (props: Props) => {
 					mode="single"
 					selected={moment(props.value).toDate()}
 					onSelect={(val) => {
-						props.onChange?.(moment(val).toISOString())
+						props.onChange?.(moment(val).toISOString(true))
 						setOpen(false)
 					}}
 					initialFocus

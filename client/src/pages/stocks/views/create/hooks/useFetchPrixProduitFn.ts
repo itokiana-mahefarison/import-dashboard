@@ -18,7 +18,7 @@ export const useFetchPrixProduitFn = (productId?: string, period?: string) => {
                produit: {
                 id: productId
                },
-               createdAt_inf: moment(period).add(1, "day").toISOString()
+               createdAt_inf: moment(period).toISOString(true)
             },
             pageSize: 1
         })

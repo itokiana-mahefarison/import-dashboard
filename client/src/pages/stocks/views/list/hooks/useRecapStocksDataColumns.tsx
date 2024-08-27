@@ -42,7 +42,21 @@ export const useRecapStocksDataColumns = () => {
       header: (item?.name as string).toUpperCase(),
       accessorKey: item?.name,
       cell: ({row}) => <span>{row.getValue(item?.name)}</span>
-    }))
+    })),
+    {
+      id: "totalAmount",
+      accessorKey: "totalAmount",
+      header: "Prix total",
+      cell: ({row}) => {
+        const currencyFormatter = new Intl.NumberFormat('fr-FR')
+
+        return (
+          <div className="min-w-[100px] max-w-[120px] text-nowrap overflow-hidden text-ellipsis">
+            <span>{currencyFormatter.format(row.getValue("totalAmount"))} Ar</span>
+          </div>
+        )
+      }
+    }
   ];
 	return columns;
 };
