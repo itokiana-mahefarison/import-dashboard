@@ -43,6 +43,7 @@ const CreateStocksContainer = () => {
                 title: "Creation des stocks",
                 description: `${data?.rows} lignes d'entrées de stocks ont été ajoutés`
             })
+            navigate('/stocks')
         }
     }, [isSuccess, data])
 
