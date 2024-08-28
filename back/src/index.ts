@@ -11,6 +11,7 @@ import PrixProduitRouter from './crud/PrixProduitController'
 
 import { ImportController } from "./controllers/ImportController"
 import { RecapStocksController } from "./controllers/RecapStocksController"
+import { ProductStatsController } from "./controllers/ProductStatsController"
 
 try{
     let config;
@@ -31,6 +32,7 @@ const app = useExpressApp({
 
 app.use(ImportController)
 app.use(RecapStocksController)
+app.use(ProductStatsController)
 
 
 // add crud controller middleware

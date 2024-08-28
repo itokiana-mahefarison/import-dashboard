@@ -6,22 +6,17 @@ const ProductDetailsStats = () => {
         <div className="grid grid-cols-4 gap-3 mt-2">
             <StatsBlock
                 icon={<Package/>}
-                title="test"
+                title="Stock total"
                 value="Ar 12 000"
             />
             <StatsBlock
                 icon={<Package/>}
-                title="test"
+                title="Montant total"
                 value="Ar 12 000"
             />
             <StatsBlock
                 icon={<Package/>}
-                title="test"
-                value="Ar 12 000"
-            />
-            <StatsBlock
-                icon={<Package/>}
-                title="test"
+                title="Sites associés aux stocks"
                 value="Ar 12 000"
             />
         </div>
