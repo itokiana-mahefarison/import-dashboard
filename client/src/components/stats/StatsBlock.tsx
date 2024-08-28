@@ -15,7 +15,6 @@ export const StatsBlock = (props: Props) => {
                 <div className="grid gap-1">
                     <h3 className="font-semibold text-sm">{props.title}</h3>
                     <span className="font-bold text-3xl overflow-hidden text-ellipsis">{props.value}</span>
-                    <span className="text-xs text-muted-foreground">Compared to last month</span>
                 </div>
             </CardContent>
         </Card>

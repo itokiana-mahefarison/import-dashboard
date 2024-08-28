@@ -39,7 +39,8 @@
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "randomcolor": "^0.6.2"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
@@ -56,6 +57,7 @@
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "@types/randomcolor": "^0.5.9"
   }
 }

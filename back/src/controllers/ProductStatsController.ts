@@ -16,7 +16,7 @@ ProductStatsController.get("/stats/:id", async (req, res, next) => {
                 produit: {
                     id
                 },
-                entryDate: Between(query.from, query.to)
+                // entryDate: Between(query.from, query.to)
             }
         })
         const result = {} as StatsProduct
@@ -33,7 +33,7 @@ ProductStatsController.get("/stats/:id", async (req, res, next) => {
         const pricesUsed = allEntries
                                     ?.map((entry) => entry.prix)
                                     .filter((prix) => prix !== undefined && prix !== null)
-                                    .sort((a, b) => moment(a.createdAt).diff(b.createdAt, 'month')) || []
+                                    .sort((a, b) => moment(a.createdAt).diff(b.createdAt, 'days')) || []
 
         const allPrices = [] as Array<Partial<PrixProduit>>
         pricesUsed.forEach((item, index) => {
