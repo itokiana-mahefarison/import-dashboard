@@ -8,7 +8,7 @@ export const PricesChart = (props: Props) => {
     const chartConfig = {
 		prix: {
 			label: "Prix",
-			color: "hsl(var(--chart-1))",
+			color: "#32a852",
 		}
 	} satisfies ChartConfig;
 
@@ -55,7 +55,7 @@ export const PricesChart = (props: Props) => {
 						/>
 						<defs>
 							<linearGradient
-								id="fillDesktop"
+								id="fillPrix"
 								x1="0"
 								y1="0"
 								x2="0"
@@ -63,12 +63,12 @@ export const PricesChart = (props: Props) => {
 							>
 								<stop
 									offset="5%"
-									stopColor="#32a852"
+									stopColor="var(--color-prix)"
 									stopOpacity={0.8}
 								/>
 								<stop
 									offset="95%"
-									stopColor="#32a852"
+									stopColor="var(--color-prix)"
 									stopOpacity={0.1}
 								/>
 							</linearGradient>
@@ -76,9 +76,9 @@ export const PricesChart = (props: Props) => {
 						<Area
 							dataKey="prix"
 							type="natural"
-							fill="url(#fillDesktop)"
+							fill="url(#fillPrix)"
 							fillOpacity={0.4}
-							stroke="#32a852"
+							stroke="var(--color-prix)"
 							stackId="a"
 						/>
 					</AreaChart>
