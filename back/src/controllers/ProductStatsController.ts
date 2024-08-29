@@ -16,7 +16,7 @@ ProductStatsController.get("/stats/:id", async (req, res, next) => {
                 produit: {
                     id
                 },
-                // entryDate: Between(query.from, query.to)
+                entryDate: Between(query.from, query.to)
             }
         })
         const result = {} as StatsProduct

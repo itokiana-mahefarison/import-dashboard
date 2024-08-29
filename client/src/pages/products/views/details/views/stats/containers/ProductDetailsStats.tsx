@@ -5,15 +5,19 @@ import { Package } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { PricesChart } from "../components/PricesChart"
 import { StocksBySitePieChart } from "../components/StocksBySitePieChart"
+import { useProductDetailsDateRange } from "../../../hooks/useProductDetailsDateRange"
 
 const ProductDetailsStats = () => {
     const {id} = useParams()
+    const {formData: dateRange} = useProductDetailsDateRange(id)
 
     const { data } = useHttpQuery<TProductStats>({
         controllerURl: `stats/${id}`,
-        queryKey: ["produit_data", id, 'stats'],
+        queryKey: ["produit_data", id, 'stats', dateRange],
+        data: dateRange,
         options: {
-            suspense: true
+            suspense: true,
+            enabled: dateRange?.from !== undefined && dateRange?.to !== undefined
         }
     })
 
@@ -21,7 +25,7 @@ const ProductDetailsStats = () => {
 
     return (
         <div className="grid gap-3">
-            <div className="grid grid-cols-4 gap-3 mt-2">
+            <div className="grid grid-cols-3 gap-3 mt-2">
                 <StatsBlock
                     icon={<Package/>}
                     title="Stock total"

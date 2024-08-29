@@ -5,6 +5,8 @@ import { TProduit } from "@/types/TProduit"
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom"
 import { BarChart3Icon } from "lucide-react"
 import { useEffect, useMemo } from "react"
+import { DateRangePicker } from "@/components/DateRangePicker"
+import { useProductDetailsDateRange } from "../hooks/useProductDetailsDateRange"
 
 const ProductDetails = () => {
     const {id} = useParams()
@@ -26,6 +28,8 @@ const ProductDetails = () => {
             suspense: true
         }
     })
+
+    const { formData, setFormData } = useProductDetailsDateRange(id)
 
     return (
         <ContentLayout
@@ -55,6 +59,12 @@ const ProductDetails = () => {
                 isMenuActive={(item) => {
                     return item.url === TAB
                 }}
+                tools={(
+                    <DateRangePicker
+                        value={formData}
+                        onChange={setFormData}
+                    />
+                )}
             />
             <Outlet/>
         </ContentLayout>

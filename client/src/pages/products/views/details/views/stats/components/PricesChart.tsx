@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { TPrixProduit } from "@/types/TPrixProduit"
 import moment from "moment";
@@ -16,6 +16,7 @@ export const PricesChart = (props: Props) => {
 		<Card className={props.className}>
 			<CardHeader>
 				<CardTitle>Prix du produit</CardTitle>
+				<CardDescription>Variation des prix</CardDescription>
 			</CardHeader>
 			<CardContent>
 				<ChartContainer config={chartConfig}>

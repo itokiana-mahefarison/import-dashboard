@@ -40,7 +40,7 @@
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^10.0.0",
     "xlsx": "^0.18.5",
-    "randomcolor": "^0.6.2"
+    "d3": "^7.9.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
@@ -58,6 +58,6 @@
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
-    "@types/randomcolor": "^0.5.9"
+    "@types/d3": "^7.4.3"
   }
 }

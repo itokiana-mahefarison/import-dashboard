@@ -1,13 +1,22 @@
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent } from "@/components/ui/chart";
 import { TProductStats } from "@/types/TProduit";
 import { Pie, Label, PieChart } from "recharts";
-import randomColor from "randomcolor"
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { useGenerateColor } from "../utils/useGenerateColor";
+import * as d3 from "d3"
 
 export const StocksBySitePieChart = (props: Props) => {
-    const colors = randomColor({format: "hex", count: props.stocksBySite?.length, seed: "pie-chart", hue: "green"})
+    const colors = useGenerateColor({
+		dataLength: props?.stocksBySite.length,
+		colorRangeInfo: {
+			colorStart: 0,
+			colorEnd: 1,
+			useEndAsStart: true
+		},
+		colorScale: d3.interpolateRainbow
+	})
 
     const chartConfig = useMemo(() => {
         const config = {} as any
@@ -22,8 +31,6 @@ export const StocksBySitePieChart = (props: Props) => {
         return config satisfies ChartConfig
     }, [props, colors])
 
-    console.log(chartConfig)
-
     return (
 		<Card className={cn("flex flex-col", props.className)}>
 			<CardHeader className="items-center pb-0">
@@ -33,12 +40,17 @@ export const StocksBySitePieChart = (props: Props) => {
 			<CardContent className="flex-1 pb-0">
 				<ChartContainer
 					config={chartConfig}
-					className="mx-auto aspect-square max-h-[250px]"
+					className="mx-auto aspect-square max-h-[300px] [&_.recharts-pie-label-text]:fill-foreground [&_.recharts-pie-label-text]:text-md [&_.recharts-pie-label-line]:stroke-2"
 				>
 					<PieChart>
 						<Pie
-							data={props?.stocksBySite}
+							data={props?.stocksBySite.map((item) => ({
+								...item,
+								fill: `var(--color-${item.site})`
+							}))}
 							dataKey="stock"
+							nameKey="site"
+							label
 							innerRadius={60}
 							strokeWidth={5}
 						>
@@ -76,6 +88,10 @@ export const StocksBySitePieChart = (props: Props) => {
 								}}
 							/>
 						</Pie>
+						<ChartLegend
+							content={<ChartLegendContent nameKey="site" />}
+							className="-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
+							/>
 					</PieChart>
 				</ChartContainer>
 			</CardContent>
