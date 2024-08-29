@@ -81,6 +81,8 @@ ProductStatsController.get("/stats/:id", async (req, res, next) => {
 
         result.stockBySite = allStocksBySite
 
+        result.lastEntries = allEntries?.sort((a, b) => moment(a.entryDate).diff(b.entryDate, 'days'))
+
         return res.status(200).json(result)
     } catch (error) {
         return next(error)
@@ -92,6 +94,7 @@ type StatsProduct = {
     totalAmount: number
     allPrices: Array<Partial<PrixProduit>>
     stockBySite: Array<StockBySite>
+    lastEntries: Array<Partial<EntryStock>>
 }
 
 type StockBySite = {

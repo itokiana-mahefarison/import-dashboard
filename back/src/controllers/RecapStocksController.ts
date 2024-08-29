@@ -17,7 +17,8 @@ RecapStocksController.get('/recap', async (req, res, next) => {
             const recapRow: any = {
                 id: product?.id,
                 label: product?.label,
-                class: product?.class
+                class: product?.class,
+                totalAmount: []
             }
 
             await Promise.all(allSites.map(async (site) => {
@@ -42,16 +43,22 @@ RecapStocksController.get('/recap', async (req, res, next) => {
                 if(site?.name){
                     recapRow[site?.name] = total
                 }
-
+                
                 const stockPriceArray = entryStockBySite?.map((stock) => (stock?.poidsNetKg || 0) * (stock?.prix?.prix || 0))
                 const totalAmount = !_.isEmpty(stockPriceArray) ? stockPriceArray?.reduce((prev, next) => prev + next, 0) : 0
 
                 if(site?.name){
-                    recapRow["totalAmount"] = totalAmount
+                    recapRow["totalAmount"] = [
+                        ...recapRow["totalAmount"],
+                        totalAmount
+                    ]
                 }
             }))
 
-            return recapRow
+            return {
+                ...recapRow,
+                totalAmount: (recapRow.totalAmount as Array<number>).reduce((a, b) => a + b , 0)
+            }
         }))
 
         return res.status(200).json(recap)

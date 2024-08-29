@@ -4,7 +4,7 @@ import { TProductStats } from "@/types/TProduit";
 import { Pie, Label, PieChart } from "recharts";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { useGenerateColor } from "../utils/useGenerateColor";
+import { useGenerateColor } from "../hooks/useGenerateColor";
 import * as d3 from "d3"
 
 export const StocksBySitePieChart = (props: Props) => {

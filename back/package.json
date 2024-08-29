@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "start-watch": "nodemon --exec pnpm run start",
     "generate-crud": "ts-node src/generate.ts",
     "start-test": "cross-env NODE_ENV=test pnpm run start ",
     "start-developpment": "cross-env NODE_ENV=developpment pnpm run start ",
@@ -24,7 +25,8 @@
     "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "ts-node": "^10.9.2",
-    "@types/mustache": "^4.2.5"
+    "@types/mustache": "^4.2.5",
+    "nodemon": "^3.1.4"
   },
   "author": "",
   "license": "ISC"

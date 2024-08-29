@@ -1,3 +1,4 @@
+import { TEntryStock } from "./TEntryStock"
 import { TPrixProduit } from "./TPrixProduit"
 
 export type TProduit = {
@@ -17,6 +18,7 @@ export type TProductStats = {
     totalAmount: number
     allPrices: Array<TPrixProduit>
     stockBySite: Array<StockBySite>
+    lastEntries: Array<TEntryStock>
 }
 
 type StockBySite = {

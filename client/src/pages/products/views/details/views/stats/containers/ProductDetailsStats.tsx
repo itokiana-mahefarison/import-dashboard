@@ -6,6 +6,10 @@ import { useParams } from "react-router-dom"
 import { PricesChart } from "../components/PricesChart"
 import { StocksBySitePieChart } from "../components/StocksBySitePieChart"
 import { useProductDetailsDateRange } from "../../../hooks/useProductDetailsDateRange"
+import { Datatable } from "@/pages/components/Datatable"
+import { useProductEntriesColumns } from "../hooks/useProductEntriesColumns"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import moment from "moment"
 
 const ProductDetailsStats = () => {
     const {id} = useParams()
@@ -22,6 +26,7 @@ const ProductDetailsStats = () => {
     })
 
     const currencyFormatter = new Intl.NumberFormat("fr-FR")
+    const columns = useProductEntriesColumns()
 
     return (
         <div className="grid gap-3">
@@ -52,6 +57,29 @@ const ProductDetailsStats = () => {
                     totalStocks={data?.totalStock || 0}
                     stocksBySite={data?.stockBySite || []}
                 />
+            </div>
+            <div className="grid">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Dernières entrées de stocks</CardTitle>
+                        {
+                            dateRange?.from && dateRange?.to &&
+                            (
+                                <CardDescription>
+                                    {moment(dateRange?.from).format("DD MMMM YYYY")} - {moment(dateRange?.to).format("DD MMMM YYYY")}
+                                </CardDescription>
+                            )
+                        }
+                    </CardHeader>
+                    <CardContent className="min-h-[200px]">
+                        <Datatable
+                            data={data?.lastEntries || []}
+                            columns={columns}
+                            searchPlaceholder="Rechercher parmi les sites"
+                            columnToFilter="site.name"
+                        />
+                    </CardContent>
+                </Card>
             </div>
         </div>
     )

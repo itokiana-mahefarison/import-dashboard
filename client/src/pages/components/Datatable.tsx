@@ -84,7 +84,7 @@ export const Datatable = ({
 				<div className="flex items-center justify-between py-4">
 					{!hideFilterInput && (
 						<Input
-							placeholder="Rechercher..."
+							placeholder={props.searchPlaceholder || "Rechercher..."}
 							value={
 								(table
 									.getColumn(columnToFilter)
@@ -226,4 +226,5 @@ type Props<T> = {
 	noPagination?: boolean;
 	pageSize?: number;
 	tools?: React.ReactNode
+	searchPlaceholder?: string
 };
