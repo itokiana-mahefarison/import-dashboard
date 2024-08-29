@@ -25,8 +25,12 @@ export const PeriodSelection = (props: Props) => {
     }, [])
     
     return (
-        <div className="flex items-center gap-2">
+        <div 
+            className="flex items-center border border-input
+                        bg-background hover:bg-accent hover:text-accent-foreground
+                        rounded-md transition-colors">
             <ComboBox
+                buttonVariant={"ghost"}
                 options={months}
                 value={moment(props.period).month()}
                 onSelectedOption={(val) => {
@@ -36,6 +40,7 @@ export const PeriodSelection = (props: Props) => {
             />
             <Separator orientation="vertical" />
             <ComboBox
+                buttonVariant={"ghost"}
                 options={years}
                 value={moment(props.period).year()}
                 onSelectedOption={(val) => {

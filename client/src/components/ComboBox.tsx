@@ -14,7 +14,7 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import {v4 as uuid} from "uuid"
 import { useDebounce } from "@/hooks/useDebounce";
@@ -59,7 +59,7 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
                 <Button
-                    variant="outline"
+                    variant={props.buttonVariant || "outline"}
                     role="combobox"
                     aria-expanded={open}
                     className={cn("w-full justify-between gap-1", props.className)}
@@ -136,6 +136,7 @@ type Props<T> = Pick<React.ComponentProps<'div'>, 'className'> & {
 	placeholder?: string
 	prefix?: React.ReactNode
 	dependencies?: any
+	buttonVariant?: ButtonProps['variant']
 };
 
 export type OptionsItem = {
