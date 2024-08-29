@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Input } from "@/components/ui/input"
 import _ from "lodash"
-import { CircleMinus, CirclePlus, Plus } from "lucide-react"
+import { CircleMinus, CirclePlus, LoaderCircle, Plus } from "lucide-react"
 import { ComboBox } from "@/components/ComboBox"
 import { TEntryStock } from "@/types/TEntryStock"
 import { Textarea } from "@/components/ui/textarea"
@@ -85,7 +85,7 @@ export const useCreateStockColumn = (period?: string) => {
                     const fetchPrixProduitFn = useFetchPrixProduitFn(row?.original?.produit?.id, period)
                     const initialValue = row.original?.prix?.id
 
-                    const { mutate, isSuccess, data } = useHttpMutation<TPrixProduit>({
+                    const { mutate, isSuccess, data, isLoading } = useHttpMutation<TPrixProduit>({
                         method: "POST",
                         controllerUrl: "prixproduit/insert"
                     })
@@ -161,7 +161,9 @@ export const useCreateStockColumn = (period?: string) => {
                             ) : (
                                 <span className="text-sm">* Veuillez choisir le produit</span>
                             )}
-                            placeholder="-"
+                            placeholder={isLoading ? (
+                                <LoaderCircle className="animate-spin" />
+                            ) : '-'}
                             prefix={(
                                 <span>
                                     Ar

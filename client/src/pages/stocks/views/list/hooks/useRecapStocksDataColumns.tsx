@@ -11,7 +11,7 @@ export const useRecapStocksDataColumns = () => {
       header: "Code produit",
       cell: ({row}) => {
         return (
-          <div className="min-w-[90px]">
+          <div className="min-w-[150px]">
             <span>{row.getValue('id')}</span>
           </div>
         )
@@ -22,7 +22,7 @@ export const useRecapStocksDataColumns = () => {
       accessorKey: "label",
       header: "Nom produit",
       cell: ({row}) => (
-        <div className="min-w-[90px] max-w-[130px] text-nowrap overflow-hidden text-ellipsis">
+        <div className="min-w-[150px] max-w-[180px] text-nowrap overflow-hidden text-ellipsis">
           <span>{row.getValue('label')}</span>
         </div>
       )

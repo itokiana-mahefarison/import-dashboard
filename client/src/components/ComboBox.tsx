@@ -133,7 +133,7 @@ type Props<T> = Pick<React.ComponentProps<'div'>, 'className'> & {
 	onEnableFetch?: () => boolean
 	onRenderNoResult?: (suggest?: string, closeDialog?: () => void) => React.ReactNode
 	onDefaultValue?: (options?: Array<OptionsItem>) => any
-	placeholder?: string
+	placeholder?: string | React.ReactNode
 	prefix?: React.ReactNode
 	dependencies?: any
 	buttonVariant?: ButtonProps['variant']

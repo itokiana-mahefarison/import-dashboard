@@ -37,7 +37,7 @@ export const StocksBySitePieChart = (props: Props) => {
 				<CardTitle>Détails des stocks</CardTitle>
 				<CardDescription>Nombre de stocks par site</CardDescription>
 			</CardHeader>
-			<CardContent className="flex-1 pb-0">
+			<CardContent className="flex-1 p-6">
 				<ChartContainer
 					config={chartConfig}
 					className="mx-auto aspect-square max-h-[300px] [&_.recharts-pie-label-text]:fill-foreground [&_.recharts-pie-label-text]:text-md [&_.recharts-pie-label-line]:stroke-2"

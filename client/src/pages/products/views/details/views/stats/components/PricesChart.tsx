@@ -3,6 +3,7 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "
 import { TPrixProduit } from "@/types/TPrixProduit"
 import moment from "moment";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import _ from "lodash"
 
 export const PricesChart = (props: Props) => {
     const chartConfig = {
@@ -39,11 +40,12 @@ export const PricesChart = (props: Props) => {
                         <YAxis
                             tickLine={false}
                             axisLine={false}
-                            tickMargin={8}
+                            tickMargin={5}
                             tickFormatter={(value) => {
                                 const formatter = new Intl.NumberFormat('fr-FR')
                                 return formatter.format(value)
                             }}
+							domain={[0, 'dataMax + 10000']}
                         />
 						<ChartTooltip
 							cursor={false}

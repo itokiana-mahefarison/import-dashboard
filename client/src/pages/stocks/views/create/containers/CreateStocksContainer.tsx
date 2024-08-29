@@ -27,7 +27,7 @@ const CreateStocksContainer = () => {
     const [period, setPeriod] = useState<string>()
     const columns = useCreateStockColumn(period)
     const {toast} = useToast()
-    const { mutate, isSuccess, data } = useHttpMutation({
+    const { mutate, isSuccess, data, isLoading } = useHttpMutation({
         method: "POST",
         controllerUrl: "entrystock/insertBatch"
     })
@@ -43,7 +43,6 @@ const CreateStocksContainer = () => {
                 title: "Creation des stocks",
                 description: `${data?.rows} lignes d'entrées de stocks ont été ajoutés`
             })
-            navigate('/stocks')
         }
     }, [isSuccess, data])
 
@@ -135,6 +134,7 @@ const CreateStocksContainer = () => {
                     site && period && (
                         <EditableTable
                             id={EDITABLE_TABLE_FORMDATA_ID}
+                            isLoading={isLoading}
                             defaultColumn={defaultColumn}
                             columns={columns}
                             defaultValue={[

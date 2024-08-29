@@ -17,9 +17,10 @@ import { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { v4 as uuid } from "uuid"
 import _ from 'lodash'
+import { LoaderCircle } from "lucide-react";
 
 export const EditableTable = <T=Record<string,any>>(props: Props<T>) => {
-    const {formData, setFormData, reset} = useFormData<Array<T>>({
+    const {formData, setFormData} = useFormData<Array<T>>({
         formData: props?.defaultValue,
         id: props.id
     })
@@ -115,10 +116,11 @@ export const EditableTable = <T=Record<string,any>>(props: Props<T>) => {
 					onClick={() => {
 						const data = props?.onBeforeSaving?.(formData) || formData
 						props.onSaving?.(data)
-						reset()
 					}}
+					className="gap-2"
+					disabled={props.isLoading}
                 >
-                    Sauvegarder
+                    {props?.isLoading && <LoaderCircle />} Sauvegarder
                 </Button>
             </div>
 		</div>
@@ -132,4 +134,5 @@ type Props<T> = {
     defaultColumn?: Partial<ColumnDef<T>>
 	onBeforeSaving?: (data: Array<T>) => Array<T>
 	onSaving?: (data: Array<T>) => void
+	isLoading?: boolean
 };
