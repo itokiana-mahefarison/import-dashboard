@@ -6,7 +6,7 @@ export const useProductDetailsDateRange = (productId?: string) => {
     return useFormData<RangeValue>({
         id: `Product.${productId}.Details.Stats.DateRange`,
         formData: {
-            from: moment().set("date", 1).toISOString(true),
+            from: moment().set("date", 1).subtract(2, "month").toISOString(true),
             to: moment().set("date", 1).add(1, "month").toISOString(true)
         }
     })

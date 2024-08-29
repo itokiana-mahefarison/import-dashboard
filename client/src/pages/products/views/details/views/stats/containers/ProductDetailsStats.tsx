@@ -1,7 +1,7 @@
 import { StatsBlock } from "@/components/stats/StatsBlock"
 import { useHttpQuery } from "@/hooks/useHttpQuery"
 import { TProductStats } from "@/types/TProduit"
-import { Package } from "lucide-react"
+import { Banknote, MapPin, Package } from "lucide-react"
 import { useParams } from "react-router-dom"
 import { PricesChart } from "../components/PricesChart"
 import { StocksBySitePieChart } from "../components/StocksBySitePieChart"
@@ -37,12 +37,12 @@ const ProductDetailsStats = () => {
                     value={`${data?.totalStock || 0} Kg`}
                 />
                 <StatsBlock
-                    icon={<Package/>}
+                    icon={<Banknote />}
                     title="Montant total"
                     value={`Ar ${currencyFormatter.format(data?.totalAmount || 0)}`}
                 />
                 <StatsBlock
-                    icon={<Package/>}
+                    icon={<MapPin />}
                     title="Sites associés aux stocks"
                     value={`${data?.stockBySite?.length || 0}`}
                 />
