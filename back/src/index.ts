@@ -30,6 +30,10 @@ const app = useExpressApp({
     routes: [],
 })
 
+app.get("/", async (req, res) => {
+    return res.send("Hello World")
+})
+
 app.use(ImportController)
 app.use(RecapStocksController)
 app.use(ProductStatsController)
