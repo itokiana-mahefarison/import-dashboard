@@ -95,7 +95,7 @@ export const useCreateStockColumn = (period?: string) => {
                     useEffect(() => {
                         if(isSuccess){
                             table.options.meta?.updateData?.(row.index, "prix", {id: data?.id})
-                            queryClient.invalidateQueries("prix_produit_data")
+                            queryClient.invalidateQueries(row?.original?.id)
                         }
                     }, [isSuccess, data])
 
@@ -120,10 +120,10 @@ export const useCreateStockColumn = (period?: string) => {
 
                     return (
                         <ComboBox
-                            id="prix_produit_data"
+                            id={row?.original?.id}
                             dependencies={{
                                 product: row?.original?.produit?.id,
-                                period
+                                period,
                             }}
                             className="w-[170px]"
                             value={initialValue}
@@ -137,16 +137,18 @@ export const useCreateStockColumn = (period?: string) => {
                             fetchOptions={fetchPrixProduitFn}
                             onEnableFetch={() => row?.original?.produit?.id !== undefined}
                             onFetchOptionsSuccess={(options) => {
-                                return options.data?.map((item) => ({
-                                    label: currencryFormater.format(item.prix!),
-                                    renderLabel: (
-                                        <p> 
-                                            {item?.createdAt && <span className="text-xs bg-foreground text-background mr-2 py-[1px] px-2 rounded-full">{moment(item.createdAt).format("DD/MM/YYYY")}</span>} 
-                                            <span className="text-lg">{`${currencryFormater.format(item.prix!)} Ar`}</span>
-                                        </p>
-                                    ), 
-                                    value: item.id
-                                }))
+                                return options.data?.map((item) => {
+                                    return {
+                                        label: currencryFormater.format(item.prix!),
+                                        renderLabel: (
+                                            <p> 
+                                                {item?.createdAt && <span className="text-xs bg-foreground text-background mr-2 py-[1px] px-2 rounded-full">{moment(item.createdAt).format("DD/MM/YYYY")}</span>} 
+                                                <span className="text-lg">{`${currencryFormater.format(item.prix!)} Ar`}</span>
+                                            </p>
+                                        ), 
+                                        value: item.id
+                                    }
+                                })
                             }}
                             onRenderNoResult={(prix, closeDialog) => row.original?.produit?.id ? (
                                 <div className="grid gap-2 justify-center max-w-[200px] px-2">

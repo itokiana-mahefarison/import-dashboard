@@ -37,6 +37,8 @@ export const ComboBox = <T=any>(props: Props<T>) => {
 		},
 		{
 			enabled: props.fetchOptions !== undefined && props.options === undefined && (props?.onEnableFetch?.() ?? true),
+			refetchOnMount: false,
+			refetchOnWindowFocus: false
 		}
 	)
 
